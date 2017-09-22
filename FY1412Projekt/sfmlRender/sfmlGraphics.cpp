@@ -40,9 +40,9 @@ void sfmlGraphics::render()
 	text.setFont(font1);
 	text.setString("watafaq");
 	text.setCharacterSize(50);
-	text.setFillColor(Color::Green);
-	text.setPosition(300, 300);
-	text.setRotation(30);
+	text.setFillColor(Color::Black);
+	
+	
 	text.setOutlineColor(Color::Black);
 
 	this->window->draw(text);

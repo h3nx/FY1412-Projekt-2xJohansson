@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FY1412Projekt", "FY1412Projekt.vcxproj", "{C61BDD25-6FB4-4393-8BF3-32D61E27E545}"
 EndProject
@@ -11,6 +11,8 @@ Global
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		StaticDebug|x64 = StaticDebug|x64
+		StaticDebug|x86 = StaticDebug|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.Debug|x64.ActiveCfg = Debug|x64
@@ -21,8 +23,15 @@ Global
 		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.Release|x64.Build.0 = Release|x64
 		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.Release|x86.ActiveCfg = Release|Win32
 		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.Release|x86.Build.0 = Release|Win32
+		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.StaticDebug|x64.ActiveCfg = StaticDebug|x64
+		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.StaticDebug|x64.Build.0 = StaticDebug|x64
+		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.StaticDebug|x86.ActiveCfg = StaticDebug|Win32
+		{C61BDD25-6FB4-4393-8BF3-32D61E27E545}.StaticDebug|x86.Build.0 = StaticDebug|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF2E7C17-CDE3-4075-825D-D1D155D7C380}
 	EndGlobalSection
 EndGlobal
