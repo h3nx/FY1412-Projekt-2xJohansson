@@ -8,7 +8,7 @@ public:
 	Graphics();
 	~Graphics();
 
-	virtual bool init(Settings* settings) = 0;
+	virtual bool init(HWND handle, Settings* settings) = 0;
 
 	virtual void beginRender() = 0;
 	virtual void render() = 0;

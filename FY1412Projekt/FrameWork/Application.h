@@ -2,15 +2,15 @@
 #ifndef Application_H
 #define Application_H
 #include "Struct.h"
-#include "Window.h"
+#include "AppWindow.h"
 #include "KeyBinds.h"
 #include "Settings.h"
 #include "timer.h"
 #include "MouseController.h"
 #include <iomanip>
+#include "../sfmlRender/sfmlGraphics.h"
 
-
-
+using namespace std;
 class Application
 {
 public:
@@ -39,11 +39,11 @@ private:
 	int* cmdShow;
 
 	Settings* settings;
-	Window* window;
+	AppWindow* window;
 	KeyBinds* keyBinds;
 	Timer* time;
 	MouseController* mControl;
-
+	Graphics* renderEngine;
 	int exitValue;
 
 	bool inv = true;

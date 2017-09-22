@@ -1,4 +1,6 @@
 #pragma once
+#ifndef MOUSECNTRL_H
+#define MOUSECNTRL_H
 #include "../Eigen/Core"
 #include <windows.h>
 #include <windowsx.h>
@@ -50,3 +52,4 @@ private:
 	void setPosition(Vector2f pos);
 };
 
+#endif

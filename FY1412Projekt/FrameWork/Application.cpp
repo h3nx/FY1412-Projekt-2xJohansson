@@ -7,11 +7,12 @@ Application::Application()
 
 	this->handle = NULL;
 	this->settings = new Settings("Settings.txt");
-	this->window = new Window();
+	this->window = new AppWindow();
 	this->keyBinds = new KeyBinds();
 	this->time = new Timer(0.99);
-	this->mControl = new MouseController(Vector2f(this->settings->getResolution().x,this->settings->getResolution().y));
-
+	
+	this->mControl = new MouseController(Eigen::Vector2f(this->settings->getResolution().x,this->settings->getResolution().y));
+	this->renderEngine = nullptr;
 }
 
 
@@ -22,6 +23,7 @@ Application::~Application()
 	delete this->keyBinds;
 	delete this->mControl;
 	delete this->time;
+	delete this->renderEngine;
 }
 
 
@@ -49,6 +51,8 @@ bool Application::init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 		this->keyBinds->addBind(toAdd[i], nameToAdd[i]);
 	
 
+
+	this->renderEngine = new sfmlGraphics();
 
 	return true;
 }
@@ -96,10 +100,14 @@ void Application::update()
 		this->render();
 	
 }
+
 void Application::render()
 {
 	//Render engine here
+	
 
+
+	
 	
 }
 

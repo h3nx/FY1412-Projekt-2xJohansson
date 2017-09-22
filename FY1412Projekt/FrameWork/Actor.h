@@ -1,6 +1,6 @@
 #pragma once
-#ifndef Actor_H
-#define Actor_H
+#ifndef Actoraaa_H
+#define Actoraaa_H
 #include "../Eigen/Core"
 //#include "Hitbox.h"
 //#include <../Eigen/Eigen>
@@ -9,6 +9,7 @@ using namespace Eigen;
 
 class Actor
 {
+
 public:
 	Actor();
 	Actor(Vector4f position);

@@ -39,7 +39,10 @@
     <ClCompile Include="FrameWork\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FrameWork\Window.cpp">
+    <ClCompile Include="sfmlRender\sfmlGraphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameWork\AppWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +71,10 @@
     <ClInclude Include="FrameWork\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FrameWork\Window.h">
+    <ClInclude Include="sfmlRender\sfmlGraphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameWork\AppWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
