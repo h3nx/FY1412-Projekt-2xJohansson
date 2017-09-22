@@ -4,7 +4,6 @@
 
 Application::Application()
 {
-
 	this->handle = NULL;
 	this->settings = new Settings("Settings.txt");
 	this->window = new AppWindow();
