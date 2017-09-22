@@ -19,8 +19,8 @@ public:
 private:
 	
 	WindowHandle sfmlhandle;
-	Window* something;
-
+	RenderWindow* window;
+	Font font1;
 	
 	
 };

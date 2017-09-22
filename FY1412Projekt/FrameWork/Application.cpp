@@ -52,6 +52,7 @@ bool Application::init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 
 
 	this->renderEngine = new sfmlGraphics();
+	this->renderEngine->init(this->handle, this->settings);
 
 	return true;
 }
@@ -104,7 +105,11 @@ void Application::render()
 {
 	//Render engine here
 	
+	this->renderEngine->beginRender();
 
+	this->renderEngine->render();
+
+	this->renderEngine->endRender();
 
 	
 	
