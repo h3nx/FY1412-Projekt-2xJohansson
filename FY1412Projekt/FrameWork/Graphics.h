@@ -6,7 +6,7 @@ class Graphics
 {
 public:
 	Graphics();
-	~Graphics();
+	virtual ~Graphics();
 
 	virtual bool init(HWND handle, Settings* settings) = 0;
 

@@ -7,7 +7,9 @@ Actor::Actor()
 	this->position = Vector4f(400, 400, 0, 1);
 	this->direction = Vector4f(0, 0, 0, 0);
 	this->velocity = Vector4f(0, 0, 0, 0);
+	this->acceleration = Vector4f(0, 0, 0, 0);
 	this->rotationVelocity = Vector4f(0, 0, 0, 0);
+	this->rotationAcceleration = Vector4f(0, 0, 0, 0);
 	this->scale = Vector4f(1, 1, 1, 0);
 	this->rotation = Vector4f(0, 0, 0, 0);
 	//this->hb = new Hitbox(0);
@@ -53,9 +55,19 @@ void Actor::setVelocity(Vector4f velocity)
 	this->velocity = velocity;
 }
 
+void Actor::setAcceleration(Vector4f acceleration)
+{
+	this->acceleration = acceleration;
+}
+
 void Actor::setRotationVelocity(Vector4f rotVel)
 {
 	this->rotationVelocity = rotVel;
+}
+
+void Actor::setRotationAcceleration(Vector4f rotAcc)
+{
+	this->rotationAcceleration = rotAcc;
 }
 
 
@@ -113,6 +125,11 @@ Vector4f Actor::getScale()
 Vector4f Actor::getVelocity()
 {
 	return this->velocity;
+}
+
+Vector4f Actor::getAcceleration()
+{
+	return this->acceleration;
 }
 
 Vector4f Actor::getRotationVelocity()

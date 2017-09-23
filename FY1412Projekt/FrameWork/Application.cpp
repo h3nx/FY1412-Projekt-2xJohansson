@@ -12,6 +12,8 @@ Application::Application()
 	
 	this->mControl = new MouseController(Eigen::Vector2f(this->settings->getResolution().x,this->settings->getResolution().y));
 	this->renderEngine = nullptr;
+
+	this->table = new Table();
 }
 
 
@@ -23,6 +25,7 @@ Application::~Application()
 	delete this->mControl;
 	delete this->time;
 	delete this->renderEngine;
+	delete this->table;
 }
 
 
@@ -94,7 +97,8 @@ void Application::update()
 			0,
 			0
 		);
-		this->step();
+		//this->step();
+		this->table->update(delta);
 		
 	}
 		this->render();
@@ -106,6 +110,8 @@ void Application::render()
 	//Render engine here
 	
 	this->renderEngine->beginRender();
+
+	dynamic_cast<sfmlGraphics*>(this->renderEngine)->drawThis(this->table->getBall());
 
 	this->renderEngine->render();
 

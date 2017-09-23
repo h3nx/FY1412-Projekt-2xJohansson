@@ -22,7 +22,9 @@ public:
 	void setRotation(Vector4f rotation);
 	void setScale(Vector4f scale);
 	void setVelocity(Vector4f velocity);
+	void setAcceleration(Vector4f acceleration);
 	void setRotationVelocity(Vector4f rotVel);
+	void setRotationAcceleration(Vector4f rotAcc);
 	void setSize(Vector4f size);
 	
 	void changeVelocity(Vector4f delta);
@@ -38,10 +40,12 @@ public:
 
 
 	Vector4f getPosition();
-	Vector4f getRotation();
+	Vector4f getRotation();  //?
 	Vector4f getScale();
 	Vector4f getVelocity();
+	Vector4f getAcceleration();
 	Vector4f getRotationVelocity();
+	//Vector4f getRotationAcceleration();
 	Vector4f getSize();
 
 	void update();
@@ -51,14 +55,14 @@ private:
 	Vector4f direction;
 	Vector4f scale;
 	Vector4f velocity;
-	Vector4f rotation;
+	Vector4f acceleration;
+	Vector4f rotation;	// rotation har väl bara velocity + acceleration?
 	Vector4f rotationVelocity;
+	Vector4f rotationAcceleration;
 	Vector4f size;
 	//Hitbox* hb;
 
 	
-
-
 
 private:
 	Matrix4f worldMatrix();

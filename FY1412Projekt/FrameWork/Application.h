@@ -6,6 +6,7 @@
 #include "KeyBinds.h"
 #include "Settings.h"
 #include "timer.h"
+#include "../Game/Table.h"
 #include "MouseController.h"
 #include <iomanip>
 #include "../sfmlRender/sfmlGraphics.h"
@@ -44,6 +45,7 @@ private:
 	Timer* time;
 	MouseController* mControl;
 	Graphics* renderEngine;
+	Table* table;
 	int exitValue;
 
 	bool inv = true;

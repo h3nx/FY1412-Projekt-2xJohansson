@@ -14,7 +14,7 @@ public:
 	void render();
 	void endRender();
 
-
+	void drawThis(sf::CircleShape *shapes);
 
 private:
 	

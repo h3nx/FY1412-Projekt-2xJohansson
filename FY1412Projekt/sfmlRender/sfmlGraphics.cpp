@@ -58,3 +58,8 @@ void sfmlGraphics::endRender()
 
 }
 
+void sfmlGraphics::drawThis(sf::CircleShape *shapes)
+{
+	this->window->draw(*shapes);
+}
+
