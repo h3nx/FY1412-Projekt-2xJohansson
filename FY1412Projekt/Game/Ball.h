@@ -8,7 +8,7 @@ public:
 	Ball(Eigen::Vector3f position, float radius, float mass, float friction);
 	~Ball();
 
-	void update();
+	void update(float delta);
 
 
 	void setRadius(float radius);

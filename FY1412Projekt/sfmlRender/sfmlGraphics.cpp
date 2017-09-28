@@ -4,6 +4,7 @@
 
 sfmlGraphics::sfmlGraphics()
 {
+
 }
 
 
@@ -19,13 +20,38 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	this->window = new RenderWindow(handle);
 	if (window)
 		float asd;
-	this->beginRender();
-	this->endRender();
+	this->windowSpec.resolution = settings->getResolution();
+	this->windowSpec.fullScreen = settings->getFullScreen();
+	this->windowSpec.vSync = settings->getVsync();
+	this->pixelSize = 1/(2.6 / (this->windowSpec.resolution.x*0.9));
+	
 
 	if (!font1.loadFromFile("BebasNeue.otf"))
 	{
 		return false;
 	}
+
+	this->poolTable.setFillColor(sf::Color(0,84,22,255));
+	this->poolTable.setPosition(this->windowSpec.resolution.x, this->windowSpec.resolution.y);
+	this->poolTable.setSize(sf::Vector2f(2.6*this->pixelSize, 1.3*this->pixelSize));
+	this->poolTable.setPosition(this->windowSpec.resolution.x *0.05, this->windowSpec.resolution.y *0.05);
+
+
+
+	for (int i = 0; i < 15; i++)
+	{
+		std::string fileName = "Pics/" + to_string(i) + ".png";
+		
+		texs[i].loadFromFile(fileName);
+
+		this->balls[i].setPosition(i * 50, i * 50);
+		this->balls[i].setRadius(0.028*this->pixelSize);
+		this->balls[i].setFillColor(sf::Color::White);
+		this->balls[i].setTexture(&texs[i]);
+	}
+
+
+
 
 
 	return true;
@@ -34,26 +60,25 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 void sfmlGraphics::beginRender()
 {
 	this->window->setActive();
-	this->window->clear(Color::White);
+	this->window->clear(Color::Black);
+
+	this->window->draw(this->poolTable);
 
 
 }
 
-void sfmlGraphics::render()
+void sfmlGraphics::render(Actor* toRender)
 {
-	Text text;
-	text.setFont(font1);
-	text.setString("watafaq");
-	text.setCharacterSize(50);
-	text.setFillColor(Color::Black);
+	//static unsigned int id = 0;
 	
-	
-	text.setOutlineColor(Color::Black);
+	unsigned int idx = toRender->getID();
+	Eigen::Vector3f pos = toRender->getPosition()*this->pixelSize;
 
-	this->window->draw(text);
 
-	CircleShape asd;
-	
+	this->balls[idx].setPosition(pos[0],pos[1]);
+	//this->balls[id].setRotation(toRender->getRotation()[2]);
+	this->window->draw(this->balls[idx]);
+	//id = (id + 1) % 15;
 }
 
 void sfmlGraphics::endRender()
@@ -70,3 +95,22 @@ void sfmlGraphics::drawThis(sf::CircleShape *shapes)
 	this->window->draw(*shapes);
 }
 
+
+
+
+
+
+
+
+
+
+//Text text;
+//text.setFont(font1);
+//text.setString("watafaq");
+//text.setCharacterSize(50);
+//text.setFillColor(Color::Black);
+//
+//
+//text.setOutlineColor(Color::Black);
+
+//this->window->draw(text);

@@ -83,7 +83,7 @@ std::wstring s2ws(const std::string& s)
 
 void Application::update()
 {
-	static float freq = 1 / 60;
+	static float freq = 1.0f / 60.0f;
 	static float delta = 0;
 	
 	delta += this->time->deltaTime();
@@ -100,7 +100,8 @@ void Application::update()
 void Application::render()
 {
 	this->renderEngine->beginRender();
-	this->renderEngine->render();
+	for(int i = 0;i<15;i++)
+		this->renderEngine->render(this->table->getBall(i));
 	this->renderEngine->endRender();
 
 	if (true)

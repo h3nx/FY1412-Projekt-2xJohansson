@@ -11,13 +11,13 @@ public:
 	virtual bool init(HWND handle, Settings* settings) = 0;
 
 	virtual void beginRender() = 0;
-	virtual void render() = 0;
+	virtual void render(Actor* toRender) = 0;
 //	virtual void renderText(std::string txt, int x, int y);
 	virtual void endRender() = 0;
 
 protected:
 	HWND handle;
-	struct windowSpec
+	struct windowSpecs
 	{
 		vec size;
 		vec resolution;
@@ -25,6 +25,6 @@ protected:
 		int fullScreen = 0;
 
 	};
-	windowSpec window;
+	windowSpecs windowSpec;
 };
 

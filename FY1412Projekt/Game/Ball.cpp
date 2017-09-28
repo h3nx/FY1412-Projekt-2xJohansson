@@ -26,9 +26,9 @@ Ball::~Ball()
 
 
 
-void Ball::update()
+void Ball::update(float delta)
 {
-	this->move();
+	this->move(delta);
 
 }
 
