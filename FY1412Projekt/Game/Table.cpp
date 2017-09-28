@@ -12,8 +12,8 @@ Table::Table()
 	{
 		this->balls[i].setPosition(Eigen::Vector3f(i*0.05, i*0.05, 0));
 		this->balls[i].setMass(mass_BALL);
-		this->balls[i].setVelocity(Eigen::Vector3f(0.03, 0, 0));
-		this->balls[i].setAcceleration(Eigen::Vector3f(-0.001, 0, 0));
+		this->balls[i].setVelocity(Eigen::Vector3f(0.01, 0, 0));
+		this->balls[i].setAcceleration(Eigen::Vector3f(0, 0.00001, 0));
 		this->balls[i].setID(i);
 	}
 
