@@ -15,8 +15,12 @@ sfmlGraphics::~sfmlGraphics()
 bool sfmlGraphics::init(HWND handle, Settings * settings)
 {
 	this->sfmlhandle = handle;
+	
 	this->window = new RenderWindow(handle);
-
+	if (window)
+		float asd;
+	this->beginRender();
+	this->endRender();
 
 	if (!font1.loadFromFile("BebasNeue.otf"))
 	{
@@ -29,6 +33,7 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 
 void sfmlGraphics::beginRender()
 {
+	this->window->setActive();
 	this->window->clear(Color::White);
 
 
@@ -47,12 +52,14 @@ void sfmlGraphics::render()
 
 	this->window->draw(text);
 
-
+	CircleShape asd;
+	
 }
 
 void sfmlGraphics::endRender()
 {
 	this->window->display();
+	this->window->setActive(false);
 
 
 

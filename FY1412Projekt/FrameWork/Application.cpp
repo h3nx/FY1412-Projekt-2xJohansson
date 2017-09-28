@@ -45,6 +45,7 @@ bool Application::init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCm
 		return false;
 	
 
+	//ShowWindow(this->handle, nCmdShow);
 
 	
 	char toAdd[] = { 'W','S','D','A',VK_SPACE,VK_CONTROL,VK_SHIFT,'B','C',VK_ESCAPE};
@@ -86,175 +87,42 @@ void Application::update()
 	static float delta = 0;
 	
 	delta += this->time->deltaTime();
-
 	int loops = 0;
 	while (delta > freq && loops++ < 3)
 	{
 		delta -= freq;
-		Vector4f move(
-			this->keyBinds->isBindDown(RIGHT) - this->keyBinds->isBindDown(LEFT),
-			this->keyBinds->isBindDown(BACK) - this->keyBinds->isBindDown(FORWARD),
-			0,
-			0
-		);
-		//this->step();
-		this->table->update(delta);
-		
+		this->step(freq);
 	}
-		this->render();
+	this->render();
 	
 }
 
 void Application::render()
 {
-	//Render engine here
-	
 	this->renderEngine->beginRender();
-
-	dynamic_cast<sfmlGraphics*>(this->renderEngine)->drawThis(this->table->getBall());
-
 	this->renderEngine->render();
-
 	this->renderEngine->endRender();
 
-	
+	if (true)
+		int stop;
 	
 }
-
-
-bool Application::processMessage(MSG msg)
-{
-	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	if (msg.message == WM_QUIT)
-	{
-		this->exitValue = msg.wParam;
-		this->quit();
-		return false;
-	}
-	return true;
-}
-
-void Application::input(UINT * message, WPARAM * wParam, LPARAM * lParam)
+void Application::step(const float delta)
 {
 
-	if (*message == WM_QUIT)
-	{
+	Eigen::Vector3f move(
+		this->keyBinds->isBindDown(RIGHT) - this->keyBinds->isBindDown(LEFT),
+		this->keyBinds->isBindDown(BACK) - this->keyBinds->isBindDown(FORWARD),
+		0
+	);
 
-	}
-	switch (*message)
-	{
-
-	case WM_CLOSE: {
-		PostQuitMessage(1);
-		break;
-	}
-	case WM_DESTROY: {
-		PostQuitMessage(2);
-		break;
-	}		
-	case WM_MOUSEMOVE:
-	{
-		this->mControl->update(*lParam);
-	}break;
-
-	case WM_KEYDOWN:{
-		this->keyDown(*wParam);	
-
-		if (*wParam == VK_ESCAPE)
-			PostQuitMessage(*wParam);
-		break;
-	}
-	case WM_KEYUP:{
-		this->keyBinds->up(*wParam);
-		break;
-	}
-
-	case WM_LBUTTONDOWN:{
-		this->keyDown(1);
-		break;
-	}
-	case WM_LBUTTONUP:{
-		this->keyUp(1);
-		break;
-	}
-	case WM_RBUTTONDOWN:{
-		this->keyDown(2);
-		break;
-	}
-	case WM_RBUTTONUP:{
-		this->keyUp(2);
-		break;
-	}
-	case WM_MBUTTONDOWN:{
-		this->keyDown(4);
-		break;
-	}
-	case WM_MBUTTONUP:{
-		this->keyUp(4);
-		break;
-	}
-
-	case WM_XBUTTONDOWN:{
-		this->keyDown(GET_XBUTTON_WPARAM(*wParam) == 2 ? VK_XBUTTON1 : VK_XBUTTON2);
-		break;
-	}
-	case WM_XBUTTONUP:{
-		this->keyUp(GET_XBUTTON_WPARAM(*wParam) == 2 ? VK_XBUTTON1 : VK_XBUTTON2);
-		break;
-	}
-
-	case WM_MOUSELEAVE:{
-		//	game->outOfFocus(false);
-		//	focus = 0;
-		break;
-	}
+	this->table->update(delta);
+		
 
 
-	case WM_ACTIVATE:{
-		if (*wParam == WA_INACTIVE)
-		{
-			//	game->outOfFocus(false);
-			//	focus = 0;
-		}
-		//else if (!focus)
-		//{
-		//	focus = 1;
-		//}
-		break;
-	}
-	
-	case WM_SIZE: {
-
-		/*	RECT client;
-			GetClientRect(handle, &client);
-			RECT window;
-			GetWindowRect(handle, &window);
-			this->settings->setResolution(vec(client.right, client.bottom));
-			this->mControl->setResolution(Vector2f(client.right, client.bottom));
-			this->settings->setWindowSize(vec(window.right, window.bottom));
-			*/
-		break;
-	}
-	case WM_PAINT: {
-	//	this->render();
-
-		break;
-	}
-
-
-	};
-}
-
-void Application::quit()
-{
-
-	this->settings->save();
 
 }
+
 void Application::keyDown(unsigned int key)
 {
 	this->keyBinds->down(key);
@@ -387,18 +255,149 @@ void Application::keyUp(unsigned int key)
 
 
 }
+
+
+
+
+
+
+
+
+///		bullshit	///
+bool Application::processMessage(MSG msg)
+{
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	if (msg.message == WM_QUIT)
+	{
+		this->exitValue = msg.wParam;
+		this->quit();
+		return false;
+	}
+	return true;
+}
+void Application::input(UINT * message, WPARAM * wParam, LPARAM * lParam)
+{
+
+	if (*message == WM_QUIT)
+	{
+
+	}
+	switch (*message)
+	{
+
+	case WM_CLOSE: {
+		PostQuitMessage(1);
+		break;
+	}
+	case WM_DESTROY: {
+		PostQuitMessage(2);
+		break;
+	}		
+	case WM_MOUSEMOVE:
+	{
+		this->mControl->update(*lParam);
+	}break;
+
+	case WM_KEYDOWN:{
+		this->keyDown(*wParam);	
+
+		if (*wParam == VK_ESCAPE)
+			PostQuitMessage(*wParam);
+		break;
+	}
+	case WM_KEYUP:{
+		this->keyBinds->up(*wParam);
+		break;
+	}
+
+	case WM_LBUTTONDOWN:{
+		this->keyDown(1);
+		break;
+	}
+	case WM_LBUTTONUP:{
+		this->keyUp(1);
+		break;
+	}
+	case WM_RBUTTONDOWN:{
+		this->keyDown(2);
+		break;
+	}
+	case WM_RBUTTONUP:{
+		this->keyUp(2);
+		break;
+	}
+	case WM_MBUTTONDOWN:{
+		this->keyDown(4);
+		break;
+	}
+	case WM_MBUTTONUP:{
+		this->keyUp(4);
+		break;
+	}
+
+	case WM_XBUTTONDOWN:{
+		this->keyDown(GET_XBUTTON_WPARAM(*wParam) == 2 ? VK_XBUTTON1 : VK_XBUTTON2);
+		break;
+	}
+	case WM_XBUTTONUP:{
+		this->keyUp(GET_XBUTTON_WPARAM(*wParam) == 2 ? VK_XBUTTON1 : VK_XBUTTON2);
+		break;
+	}
+
+	case WM_MOUSELEAVE:{
+		//	game->outOfFocus(false);
+		//	focus = 0;
+		break;
+	}
+
+
+	case WM_ACTIVATE:{
+		if (*wParam == WA_INACTIVE)
+		{
+			//	game->outOfFocus(false);
+			//	focus = 0;
+		}
+		//else if (!focus)
+		//{
+		//	focus = 1;
+		//}
+		break;
+	}
+	
+	case WM_SIZE: {
+
+		/*	RECT client;
+			GetClientRect(handle, &client);
+			RECT window;
+			GetWindowRect(handle, &window);
+			this->settings->setResolution(vec(client.right, client.bottom));
+			this->mControl->setResolution(Vector2f(client.right, client.bottom));
+			this->settings->setWindowSize(vec(window.right, window.bottom));
+			*/
+		break;
+	}
+	case WM_PAINT: {
+	//	this->render();
+
+		break;
+	}
+
+
+	};
+}
+void Application::quit()
+{
+
+	this->settings->save();
+
+}
 int Application::getExitValue()
 {
 	return this->exitValue;
-}
-void Application::step()
-{
-
-
-
-
-
-
 }
 
 

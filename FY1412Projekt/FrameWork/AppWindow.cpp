@@ -103,7 +103,7 @@ bool AppWindow::createWindow(HWND& hwnd, HINSTANCE hInstance, int nCmdShow, Sett
 
 	if (hwnd == NULL)
 		return false;
-	ShowWindow(hwnd,nCmdShow);
+
 	return true;
 }
 

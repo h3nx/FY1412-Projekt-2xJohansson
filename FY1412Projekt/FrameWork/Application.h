@@ -56,7 +56,7 @@ private:
 	void render();
 	void keyDown(unsigned int key);
 	void keyUp(unsigned int key);
-	void step();
+	void step(const float delta);
 
 
 };

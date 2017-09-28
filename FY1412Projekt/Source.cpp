@@ -9,6 +9,8 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	MSG msg = { 0 };
+	
+	
 
 
 	if (app.init(hInstance, hPrevInstance, lpCmdLine, nCmdShow, WndProc))

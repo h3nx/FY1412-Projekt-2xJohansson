@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../FrameWork/Actor.h"
+#include "Ball.h"
+#include "Cue.h"
 #include "SFML\Graphics.hpp"
 
 using namespace Eigen;
@@ -9,7 +11,8 @@ using namespace Eigen;
 #define u_BALL_CLOTH_ROLL 0.01f
 #define mass_BALL 0.165f //kg
 #define radius_BALL 0.0286f
-#define PIXEL_SIZE 0.002767f // 16:9 24" 1920*1080
+#define PIXEL_SIZE 0.002767f/4.0f // 16:9 24" 1920*1080
+
 
 class Table
 {
@@ -19,19 +22,22 @@ public:
 
 	void update(float dt);
 
-	sf::CircleShape* getBall();
+	Actor* getBall(unsigned int id);
+	Actor* getCue();
+	void beginShot();
+	void endShot();
+
+private:
+	Ball* balls;
+	Cue* cue;
 
 
 private:
-	Actor* ball;
-	sf::CircleShape ball_shape; //gör om till array
 
 
-private:
-
-	void shoot(int ballID, Vector4f velocity, Vector4f hitPos); // kommer nog behöva vara public
-
-	void updateShapes();
+	void shoot(int ballID, Eigen::Vector3f velocity, Eigen::Vector3f hitPos);
+	void updateActors(float dt);
 
 
 };
+

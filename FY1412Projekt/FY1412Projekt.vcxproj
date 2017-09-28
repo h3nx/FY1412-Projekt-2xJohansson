@@ -206,6 +206,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Cue.cpp" />
+    <ClCompile Include="Game\Ball.cpp" />
     <ClCompile Include="FrameWork\Actor.cpp" />
     <ClCompile Include="FrameWork\Application.cpp" />
     <ClCompile Include="FrameWork\Graphics.cpp" />
@@ -219,6 +221,8 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Cue.h" />
+    <ClInclude Include="Game\Ball.h" />
     <ClInclude Include="FrameWork\Actor.h" />
     <ClInclude Include="FrameWork\Application.h" />
     <ClInclude Include="FrameWork\Graphics.h" />

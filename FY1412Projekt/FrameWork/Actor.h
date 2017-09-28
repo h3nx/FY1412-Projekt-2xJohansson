@@ -2,9 +2,7 @@
 #ifndef Actoraaa_H
 #define Actoraaa_H
 #include "../Eigen/Core"
-//#include "Hitbox.h"
-//#include <../Eigen/Eigen>
-//#include <../Eigen/Geometry>
+
 using namespace Eigen;
 
 class Actor
@@ -12,62 +10,61 @@ class Actor
 
 public:
 	Actor();
-	Actor(Vector4f position);
-	Actor(Vector4f position, Vector4f rotation);
+	Actor(Vector3f position);
+	Actor(Vector3f position, Vector3f rotation);
 	~Actor();
 
-
-	void setPosition(Vector4f position);
-	void setDirection(Vector4f direction);
-	void setRotation(Vector4f rotation);
-	void setScale(Vector4f scale);
-	void setVelocity(Vector4f velocity);
-	void setAcceleration(Vector4f acceleration);
-	void setRotationVelocity(Vector4f rotVel);
-	void setRotationAcceleration(Vector4f rotAcc);
-	void setSize(Vector4f size);
+	virtual void update() = 0;
+	void setPosition(Vector3f position);
+	void setDirection(Vector3f direction);
+	void setRotation(Vector3f rotation);
+	void setScale(Vector3f scale);
+	void setVelocity(Vector3f velocity);
+	void setAcceleration(Vector3f acceleration);
+	void setRotationVelocity(Vector3f rotVel);
+	void setRotationAcceleration(Vector3f rotAcc);
+	void setSize(Vector3f size);
 	
-	void changeVelocity(Vector4f delta);
-	void changeRotationVelocity(Vector4f delta);
+	void changeVelocity(Vector3f delta);
+	void changeRotationVelocity(Vector3f delta);
 
-	void addHitbox(Vector4f position, float radius);
-	void addHitBox(Vector4f position, Vector4f sides);
-	void addHitBox(Vector4f position, Vector4f sides, Vector4f direction);
-
-//	void removeHitbox(Vector4f position);
+	void addHitbox(Vector3f position, float radius);
+	void addHitBox(Vector3f position, Vector3f sides);
 
 	bool collision(Actor& other);
 
 
-	Vector4f getPosition();
-	Vector4f getRotation();  //?
-	Vector4f getScale();
-	Vector4f getVelocity();
-	Vector4f getAcceleration();
-	Vector4f getRotationVelocity();
-	//Vector4f getRotationAcceleration();
-	Vector4f getSize();
+	Vector3f getPosition();
+	Vector3f getRotation();  
+	Vector3f getScale();
+	Vector3f getVelocity();
+	Vector3f getAcceleration();
+	Vector3f getRotationVelocity();
+	Vector3f getRotationAcceleration();
+	Vector3f getSize();
 
-	void update();
 
 private:
-	Vector4f position;
-	Vector4f direction;
-	Vector4f scale;
-	Vector4f velocity;
-	Vector4f acceleration;
-	Vector4f rotation;	// rotation har väl bara velocity + acceleration?
-	Vector4f rotationVelocity;
-	Vector4f rotationAcceleration;
-	Vector4f size;
+	Vector3f position;
+	Vector3f direction;
+	Vector3f scale;
+	Vector3f velocity;
+	Vector3f acceleration;
+	Vector3f rotation;	
+	Vector3f rotationVelocity;
+	Vector3f rotationAcceleration;
+	Vector3f size;
 	//Hitbox* hb;
 
 	
 
 private:
 	Matrix4f worldMatrix();
+	
+protected:
 	void move();
 	void rotate();
+	
 };
 
 

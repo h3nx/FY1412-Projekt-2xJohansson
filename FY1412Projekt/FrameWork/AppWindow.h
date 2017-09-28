@@ -22,6 +22,8 @@ public:
 	bool createWindow(HWND& hwnd, HINSTANCE hInstance, int nCmdShow, Settings* settings);
 	bool updateWindow(HWND& hwnd, HINSTANCE hInstance, int nCmdShow, Settings* settings);
 
+
+
 private:
 	struct appWindowMetrics
 	{

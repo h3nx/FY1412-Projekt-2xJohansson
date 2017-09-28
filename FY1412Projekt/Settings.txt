@@ -1,5 +1,5 @@
 position: 0 0
-resolution: 640 560
+resolution: 1920 1080
 fullscreen: 0
 renderengine: 1
 vsync: 0

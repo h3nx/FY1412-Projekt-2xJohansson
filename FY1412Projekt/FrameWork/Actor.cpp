@@ -4,24 +4,24 @@
 
 Actor::Actor()
 {
-	this->position = Vector4f(400, 400, 0, 1);
-	this->direction = Vector4f(0, 0, 0, 0);
-	this->velocity = Vector4f(0, 0, 0, 0);
-	this->acceleration = Vector4f(0, 0, 0, 0);
-	this->rotationVelocity = Vector4f(0, 0, 0, 0);
-	this->rotationAcceleration = Vector4f(0, 0, 0, 0);
-	this->scale = Vector4f(1, 1, 1, 0);
-	this->rotation = Vector4f(0, 0, 0, 0);
-	//this->hb = new Hitbox(0);
+	this->position = Vector3f(400, 400, 0);
+	this->direction = Vector3f(0, 0, 0);
+	this->velocity = Vector3f(0, 0, 0);
+	this->acceleration = Vector3f(0, 0, 0);
+	this->rotationVelocity = Vector3f(0, 0, 0);
+	this->rotationAcceleration = Vector3f(0, 0, 0);
+	this->scale = Vector3f(1, 1, 1);
+	this->rotation = Vector3f(0, 0, 0);
+	
 }
 
-Actor::Actor(Vector4f position):Actor()
+Actor::Actor(Vector3f position):Actor()
 {
 	this->position = position;
 }
 
 
-Actor::Actor(Vector4f position, Vector4f rotation) :Actor(position)
+Actor::Actor(Vector3f position, Vector3f rotation) :Actor(position)
 {
 	this->rotation = rotation;
 }
@@ -30,109 +30,107 @@ Actor::~Actor()
 {
 }
 
-void Actor::setPosition(Vector4f position)
+void Actor::setPosition(Vector3f position)
 {
 	this->position = position;
 }
 
-void Actor::setDirection(Vector4f direction)
+void Actor::setDirection(Vector3f direction)
 {
 	this->direction = direction;
 }
 
-void Actor::setRotation(Vector4f rotation)
+void Actor::setRotation(Vector3f rotation)
 {
 	this->rotationVelocity = rotation;
 }
 
-void Actor::setScale(Vector4f scale)
+void Actor::setScale(Vector3f scale)
 {
 	this->scale = scale;
 }
 
-void Actor::setVelocity(Vector4f velocity)
+void Actor::setVelocity(Vector3f velocity)
 {
 	this->velocity = velocity;
 }
 
-void Actor::setAcceleration(Vector4f acceleration)
+void Actor::setAcceleration(Vector3f acceleration)
 {
 	this->acceleration = acceleration;
 }
 
-void Actor::setRotationVelocity(Vector4f rotVel)
+void Actor::setRotationVelocity(Vector3f rotVel)
 {
 	this->rotationVelocity = rotVel;
 }
 
-void Actor::setRotationAcceleration(Vector4f rotAcc)
+void Actor::setRotationAcceleration(Vector3f rotAcc)
 {
 	this->rotationAcceleration = rotAcc;
 }
 
 
 
-void Actor::changeVelocity(Vector4f delta)
+void Actor::changeVelocity(Vector3f delta)
 {
 	this->velocity += delta;
 }
 
-void Actor::changeRotationVelocity(Vector4f delta)
+void Actor::changeRotationVelocity(Vector3f delta)
 {
 	this->rotationVelocity += delta;
 }
-void Actor::setSize(Vector4f size)
+void Actor::setSize(Vector3f size)
 {
 	this->size = size;
 }
-Vector4f Actor::getSize()
+Vector3f Actor::getSize()
 {
 	return this->size;
 }
 
-void Actor::addHitbox(Vector4f position, float radius)
+void Actor::addHitbox(Vector3f position, float radius)
 {
-	//this->hb->addHitbox(position, radius);
+	
 }
 
-void Actor::addHitBox(Vector4f position, Vector4f sides)
+void Actor::addHitBox(Vector3f position, Vector3f sides)
 {
 }
 
-void Actor::addHitBox(Vector4f position, Vector4f sides, Vector4f direction)
-{
-}
+
 
 bool Actor::collision(Actor & other)
 {
 	return false;
 }
 
-Vector4f Actor::getPosition()
+Vector3f Actor::getPosition()
 {
 	return this->position;
 }
 
-Vector4f Actor::getRotation()
+Vector3f Actor::getRotation()
 {
 	return this->rotation;
 }
-Vector4f Actor::getScale()
+Vector3f Actor::getScale()
 {
 	return this->scale;
 }
 
-Vector4f Actor::getVelocity()
+Vector3f Actor::getVelocity()
 {
 	return this->velocity;
 }
 
-Vector4f Actor::getAcceleration()
+Vector3f Actor::getAcceleration()
 {
 	return this->acceleration;
 }
 
-Vector4f Actor::getRotationVelocity()
+Vector3f Actor::getRotationVelocity()
 {
 	return this->rotationVelocity;
 }
@@ -147,7 +145,12 @@ void Actor::update()
 
 void Actor::move()
 {
+	this->velocity += this->acceleration;
 	this->position += this->velocity;
+	
+	this->rotationVelocity += this->rotationAcceleration;
+	this->rotation += this->rotationVelocity;
+
 
 }
 void Actor::rotate()
