@@ -86,7 +86,7 @@ void Application::update()
 	static float freq = 1.0f / 60.0f;
 	static float delta = 0;
 	
-	delta = this->time->deltaTime();
+	delta += this->time->deltaTime();
 	int loops = 0;
 	while (delta > freq && loops++ < 3)
 	{

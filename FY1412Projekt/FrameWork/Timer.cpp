@@ -35,7 +35,7 @@ float Timer::deltaTime()
 	this->lastTime = GetTickCount();
 	
 	this->avg = (this->avg * this->smoothing) + (t * (1 - this->smoothing));
-	return t;
+	return t*0.001;
 }
 
 float Timer::getFPS()
