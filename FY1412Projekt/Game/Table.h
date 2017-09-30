@@ -7,10 +7,10 @@
 
 using namespace Eigen;
 
-#define u_BALL_CLOTH_SLIDE 0.2f
-#define u_BALL_CLOTH_ROLL 0.01f
+//#define u_BALL_CLOTH_SLIDE 0.2f
+//#define u_BALL_CLOTH_ROLL 0.01f
 #define mass_BALL 0.165f //kg
-#define radius_BALL 0.0286f
+//#define radius_BALL 0.0286f
 #define PIXEL_SIZE 0.002767f/4.0f // 16:9 24" 1920*1080
 #define TABLESIZE_X 2.6
 #define TABLESIZE_Y TABLESIZE_X*0.5;

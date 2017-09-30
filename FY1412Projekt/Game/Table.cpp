@@ -18,6 +18,13 @@ Table::Table()
 	}
 
 
+	//tmp
+	this->balls[0].setPosition(Eigen::Vector3f(1, 1, 0));
+	this->balls[0].setVelocity(Eigen::Vector3f(0, 0, 0));
+	this->balls[0].setAcceleration(Eigen::Vector3f(0, 0, 0));
+	
+	this->endShot();
+
 	this->cue = new Cue();
 }
 
@@ -34,7 +41,7 @@ void Table::update(float dt)
 
 
 }
-
+  
 Actor * Table::getBall(unsigned int id)
 {
 	return &this->balls[id];
@@ -52,7 +59,7 @@ void Table::beginShot()
 
 void Table::endShot()
 {
-
+	this->balls[0].hit(Eigen::Vector3f(1, 0, 0), 0.01, 10);
 }
 
 void Table::updateActors(float dt)

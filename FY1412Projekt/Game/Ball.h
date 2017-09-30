@@ -1,5 +1,14 @@
 #pragma once
 #include "..\FrameWork\Actor.h"
+
+#define u_BALL_CLOTH_SLIDE 0.2f
+#define u_BALL_CLOTH_ROLL 0.01f
+#define mass_BALL 0.165f //kg
+#define radius_BALL 0.0286f
+#define g_ 9.82f
+
+
+
 class Ball :
 	public Actor
 {
@@ -10,6 +19,7 @@ public:
 
 	void update(float delta);
 
+	void hit(Eigen::Vector3f vec_ball_cue, float t_on_ball, float k_spring);
 
 	void setRadius(float radius);
 	void setMass(float mass);
@@ -19,10 +29,14 @@ public:
 	float getMass();
 	float getFriction();
 
+
 private:
+	bool isRolling;
 	float radius;
 	float mass;
 	float friction;
+
+	void startRoll();
 
 };
 
