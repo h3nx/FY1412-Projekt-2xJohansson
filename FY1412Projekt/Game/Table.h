@@ -35,7 +35,7 @@ private:
 	Ball* balls;
 	Cue* cue;
 	int shooting;
-	Timer time;
+	Timer* time;
 
 
 
