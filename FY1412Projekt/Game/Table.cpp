@@ -22,10 +22,13 @@ Table::Table()
 	this->balls[0].setPosition(Eigen::Vector3f(1, 1, 0));
 	this->balls[0].setVelocity(Eigen::Vector3f(0, 0, 0));
 	this->balls[0].setAcceleration(Eigen::Vector3f(0, 0, 0));
-	
-	this->endShot();
+	this->shooting = 0;
+	//this->endShot(this->balls[0].getPosition() + Eigen::Vector3f(-1, 0, 0));
 
 	this->cue = new Cue();
+
+	this->pixelSize =  (2.6 / (1920*0.9));
+
 }
 
 
@@ -38,6 +41,12 @@ Table::~Table()
 void Table::update(float dt)
 {
 	this->updateActors(dt);
+
+	if (this->shooting)
+	{
+
+
+	}
 
 
 }
@@ -54,12 +63,14 @@ Actor * Table::getCue()
 
 void Table::beginShot()
 {
-
+	this->shooting = 1;
 }
 
-void Table::endShot()
+void Table::endShot(Eigen::Vector3f mPos)
 {
-	this->balls[0].hit(Eigen::Vector3f(1, 0, 0), 0.01, 10);
+
+	this->balls[0].hit((this->balls[0].getPosition()-mPos*this->pixelSize).normalized(), 0.01, 10);
+	this->shooting = 0;
 }
 
 void Table::updateActors(float dt)

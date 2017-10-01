@@ -201,6 +201,19 @@ void Application::keyUp(unsigned int key)
 {
 	this->keyBinds->up(key);
 
+	
+	if (key == 1)
+	{
+		Eigen::Vector2f mPos = this->mControl->getMousePos();
+		this->table->endShot(Eigen::Vector3f(mPos[0],mPos[1],0));
+
+	}
+
+
+
+
+
+
 	if (this->keyBinds->getKeyBind(FORWARD).bind == key)
 	{
 

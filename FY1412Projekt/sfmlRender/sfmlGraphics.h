@@ -19,6 +19,9 @@ public:
 
 	void drawThis(sf::CircleShape *shapes);
 
+
+
+
 private:
 
 	sf::WindowHandle sfmlhandle;
