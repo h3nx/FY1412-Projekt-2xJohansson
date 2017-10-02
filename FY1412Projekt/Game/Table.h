@@ -28,6 +28,7 @@ public:
 
 	Actor* getBall(unsigned int id);
 	Actor* getCue();
+	void updateCuePos(Eigen::Vector2f mPos);
 	void beginShot();
 	void endShot(Eigen::Vector3f mPos);
 	float shotTime;

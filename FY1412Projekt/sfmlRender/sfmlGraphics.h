@@ -32,6 +32,7 @@ private:
 	double pixelSize;
 	sf::Texture texs[20];
 	sf::CircleShape balls[15];
+	sf::RectangleShape cue;
 	sf::RectangleShape poolTable;
 
 

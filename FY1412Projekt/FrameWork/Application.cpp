@@ -70,18 +70,6 @@ void Application::run()
 	
 }
 
-std::wstring s2ws(const std::string& s)
-{
-	int len;
-	int slength = (int)s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete[] buf;
-	return r;
-}
-
 void Application::update()
 {
 	static float freq = 1.0f / 60.0f;
@@ -106,6 +94,9 @@ void Application::render()
 	this->renderEngine->beginRender();
 	for(int i = 0;i<15;i++)
 		this->renderEngine->render(this->table->getBall(i));
+	this->renderEngine->render(this->table->getCue());
+
+
 
 	setprecision(2);
 	this->renderEngine->renderText(to_string(this->time->getAvg()), 0, 0);
@@ -124,8 +115,8 @@ void Application::step(const float delta)
 		0
 	);
 
+	this->table->updateCuePos(this->mControl->getMousePos());
 	this->table->update(delta);
-		
 
 
 

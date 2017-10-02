@@ -32,12 +32,13 @@ void Ball::update(float delta)
 	if (!isRolling && this->getVelocity().norm() <= this->getRotationVelocity().norm() * radius_BALL)
 		this->startRoll();
 	
-	this->move(delta);
+	
 
 	if (this->getVelocity().norm() <= this->getAcceleration().norm() * delta) {
 		this->setAcceleration(Eigen::Vector3f(0, 0, 0));
 		this->setVelocity(Eigen::Vector3f(0, 0, 0));
 	}
+	this->move(delta);
 	//this->rotate(delta);
 
 }

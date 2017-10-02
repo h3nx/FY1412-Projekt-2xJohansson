@@ -42,16 +42,20 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	{
 		std::string fileName = "Pics/" + to_string(i) + ".png";
 		
-		texs[i].loadFromFile(fileName);
+		this->texs[i].loadFromFile(fileName);
 
 		this->balls[i].setPosition(i * 50, i * 50);
 		this->balls[i].setRadius(0.028*this->pixelSize);
 		this->balls[i].setFillColor(sf::Color::White);
-		this->balls[i].setTexture(&texs[i]);
+		this->balls[i].setTexture(&this->texs[i]);
+		this->balls[i].setOrigin(sf::Vector2f(0.028*this->pixelSize, 0.028*this->pixelSize));
 	}
 
-
-
+	this->texs[15].loadFromFile("Pics/Cue.png");
+	this->cue.setTexture(&this->texs[15]);
+	this->cue.setSize(sf::Vector2f(0.03*this->pixelSize,1.5*this->pixelSize));
+	this->cue.setFillColor(sf::Color::White);
+	this->cue.setOrigin(sf::Vector2f(0.015*this->pixelSize,0));
 
 
 	return true;
@@ -69,16 +73,23 @@ void sfmlGraphics::beginRender()
 
 void sfmlGraphics::render(Actor* toRender)
 {
-	//static unsigned int id = 0;
-	
+
 	unsigned int idx = toRender->getID();
 	Eigen::Vector3f pos = toRender->getPosition()*this->pixelSize;
+	if (idx < 15)
+	{
+		this->balls[idx].setPosition(pos[0], pos[1]);
+		this->window->draw(this->balls[idx]);
+	}
+	if (idx == 15)
+	{
+		this->cue.setPosition(pos[0], pos[1]);
+		this->cue.setRotation(toRender->getRotation()[2]);
+		this->window->draw(this->cue);
+		this->renderText(to_string(toRender->getRotation()[2]),200,200);
+	}
 
 
-	this->balls[idx].setPosition(pos[0],pos[1]);
-	//this->balls[id].setRotation(toRender->getRotation()[2]);
-	this->window->draw(this->balls[idx]);
-	//id = (id + 1) % 15;
 }
 
 void sfmlGraphics::renderText(std::string txt, int x, int y)

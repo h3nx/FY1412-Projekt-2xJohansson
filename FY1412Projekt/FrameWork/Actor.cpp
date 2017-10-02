@@ -44,7 +44,7 @@ void Actor::setDirection(Eigen::Vector3f direction)
 }
 void Actor::setRotation(Eigen::Vector3f rotation)
 {
-	this->rotationVelocity = rotation;
+	this->rotation = rotation;
 }
 void Actor::setScale(Eigen::Vector3f scale)
 {
@@ -138,7 +138,9 @@ void Actor::move(float delta)
 }
 void Actor::rotate(float delta	)
 {
-/*	this->rotation += this->rotationVelocity;
+	this->rotationVelocity += this->rotationAcceleration * delta;
+	this->rotation += this->rotationVelocity * delta;
+	
 	for (int i = 0; i < 3; i++)
 	{
 		if (this->rotation[i] < 0)
@@ -146,7 +148,7 @@ void Actor::rotate(float delta	)
 		else if (this->rotation[i] > 359)
 			this->rotation[i] -= 360;
 	}
-	*/
+	
 }
 
 

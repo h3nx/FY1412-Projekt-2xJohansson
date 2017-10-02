@@ -25,7 +25,7 @@ float Timer::reset()
 
 float Timer::getTime()
 {
-	return difftime(GetTickCount(), startTime);
+	return difftime(GetTickCount(), this->startTime)*0.001;
 }
 
 
