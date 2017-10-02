@@ -27,7 +27,7 @@ Table::Table()
 	this->shooting = 0;
 	
 
-
+	this->shotTime = 0;
 }
 
 
@@ -69,7 +69,8 @@ void Table::beginShot()
 void Table::endShot(Eigen::Vector3f mPos)
 {
 
-	float t = this->time->deltaTime();
+	float t = this->time->deltaTime()*3;
+	this->shotTime = t;
 	if (t > 4)
 		t = 4;
 

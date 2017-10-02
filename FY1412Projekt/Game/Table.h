@@ -30,13 +30,13 @@ public:
 	Actor* getCue();
 	void beginShot();
 	void endShot(Eigen::Vector3f mPos);
+	float shotTime;
 
 private:
 	Ball* balls;
 	Cue* cue;
 	int shooting;
 	Timer* time;
-
 
 
 	float pixelSize;

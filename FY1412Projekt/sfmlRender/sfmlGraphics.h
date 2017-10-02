@@ -15,6 +15,7 @@ public:
 	bool init(HWND handle, Settings* settings);
 	void beginRender();
 	void render(Actor* toRender);
+	void renderText(std::string txt, int x, int y);
 	void endRender();
 
 	void drawThis(sf::CircleShape *shapes);

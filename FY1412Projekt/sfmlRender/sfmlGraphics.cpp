@@ -81,6 +81,16 @@ void sfmlGraphics::render(Actor* toRender)
 	//id = (id + 1) % 15;
 }
 
+void sfmlGraphics::renderText(std::string txt, int x, int y)
+{
+	sf::Text toRender;
+	toRender.setCharacterSize(50);
+	toRender.setFont(this->font1);
+	toRender.setPosition(x, y);
+	toRender.setString(txt);
+	this->window->draw(toRender);
+}
+
 void sfmlGraphics::endRender()
 {
 	this->window->display();

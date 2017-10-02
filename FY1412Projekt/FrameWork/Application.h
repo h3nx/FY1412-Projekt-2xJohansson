@@ -49,7 +49,7 @@ private:
 	int exitValue;
 
 	bool inv = true;
-
+	float acc;
 
 private:
 

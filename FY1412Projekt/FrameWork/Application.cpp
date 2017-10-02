@@ -14,6 +14,7 @@ Application::Application()
 	this->renderEngine = nullptr;
 
 	this->table = new Table();
+	this->acc = 0;
 }
 
 
@@ -86,7 +87,10 @@ void Application::update()
 	static float freq = 1.0f / 60.0f;
 	static float delta = 0;
 	
-	delta += this->time->deltaTime();
+	float curr = this->time->deltaTime();
+	delta += curr;
+	this->acc += curr;
+	
 	int loops = 0;
 	while (delta > freq && loops++ < 3)
 	{
@@ -102,11 +106,14 @@ void Application::render()
 	this->renderEngine->beginRender();
 	for(int i = 0;i<15;i++)
 		this->renderEngine->render(this->table->getBall(i));
-	this->renderEngine->endRender();
 
-	if (true)
-		int stop;
+	setprecision(2);
+	this->renderEngine->renderText(to_string(this->time->getAvg()), 0, 0);
+	this->renderEngine->renderText(to_string(this->time->getFPS()), 0, 60);
+	this->renderEngine->renderText(to_string(this->acc), 0, 120);
+	this->renderEngine->renderText(to_string(this->table->shotTime), 0, 180);
 	
+	this->renderEngine->endRender();
 }
 void Application::step(const float delta)
 {
@@ -127,6 +134,13 @@ void Application::step(const float delta)
 void Application::keyDown(unsigned int key)
 {
 	this->keyBinds->down(key);
+
+	if (key == 1)
+	{
+		this->table->beginShot();
+
+	}
+
 
 	if (this->keyBinds->getKeyBind(FORWARD).bind == key)
 	{
