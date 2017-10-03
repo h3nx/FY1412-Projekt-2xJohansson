@@ -34,8 +34,6 @@ Table::Table()
 	this->cue->setID(15);
 
 }
-
-
 Table::~Table()
 {
 	delete[] this->balls;
@@ -44,14 +42,9 @@ Table::~Table()
 
 void Table::update(float dt)
 {
+	
 	this->updateActors(dt);
-
-	if (this->shooting)
-	{
-
-
-	}
-
+	
 
 }
   
@@ -59,7 +52,6 @@ Actor * Table::getBall(unsigned int id)
 {
 	return &this->balls[id];
 }
-
 Actor * Table::getCue()
 {
 	return this->cue;
@@ -67,49 +59,85 @@ Actor * Table::getCue()
 
 void Table::updateCuePos(Eigen::Vector2f mPos)
 {
+	this->mPos = Eigen::Vector3f(mPos[0], mPos[1], 0)*this->pixelSize;
 
-	Eigen::Vector3f wPos = Eigen::Vector3f(mPos[0], mPos[1], 0)*this->pixelSize;
-	Eigen::Vector3f relPos = (wPos - this->balls[0].getPosition()).normalized();
-
-	float angle = 270+atan2(relPos[1], relPos[0])*(180/3.14);
-	this->cue->setPosition(wPos+(relPos*this->shotTime));
-	this->cue->setRotation(Eigen::Vector3f(0,0,angle));
-	
 
 }
-
 void Table::beginShot()
 {
 	this->time->reset();
 	this->shooting = 1;
 }
-
 void Table::endShot(Eigen::Vector3f mPos)
-{
-
-	float t = this->time->deltaTime()*3;
-	this->shotTime = t;
-	if (t > 4)
-		t = 4;
-
-	this->balls[0].hit((this->balls[0].getPosition()-mPos*this->pixelSize).normalized()*t, 0.01, 10);
-	this->shotTime = 0;
-	this->shooting = 0;
+{	
+	this->shotPos = this->mPos;
+	this->shooting = -1;
 }
-
 void Table::updateActors(float dt)
 {
+	static float animationStep = 0;
+	static Eigen::Vector3f ballPos;
+	Eigen::Vector3f relPos;
+
+
+
+	//Balls
 	for (int i = 0; i < 15; i++)
 	{
 		this->balls[i].update(dt);
 	}
+
+	//Cue animation
+
+	if (this->shooting == 1)
+	{
+		if (this->shotTime < 4)
+		{
+			this->shotTime = this->time->getTime() * 2;
+			if (this->shotTime > 4)
+				this->shotTime = 4;
+		}
+	}
+	if(shooting == -1)
+		relPos = (this->shotPos - this->balls[0].getPosition()).normalized();
+	else
+		relPos = (this->mPos - this->balls[0].getPosition()).normalized();
+
+		float angle = atan2(relPos[1], relPos[0])*(180 / 3.14) - 90;
+	this->cue->setRotation(Eigen::Vector3f(0, 0, angle));
+
+	if (this->balls[0].getVelocity().squaredNorm() == 0)
+		this->cue->setPosition(this->balls[0].getPosition() + (relPos*(this->shotTime + 0.1)));
+	else
+		this->cue->setPosition(this->balls[0].getPosition() + (relPos*(this->shotTime + 0.1)) * 1000);
+
 	if (this->shooting)
 	{
-		this->shotTime = this->time->getTime();
-		//if (this->shotTime > 4)
-		//	this->shotTime = 4;
+		if (this->shooting == 1)
+		{
+			animationStep = this->shotTime;
+
+
+		}
+		if (this->shooting == -1)
+		{
+			animationStep -= dt * 3;
+			this->cue->setPosition(this->balls[0].getPosition() + (relPos*(animationStep)));
+			
+			if (animationStep < 0.0)
+			{
+				this->balls[0].hit(-relPos*this->shotTime, 0.1, 5);
+				this->shooting = 0;
+				this->shotTime = 0;
+			}
+
+		}
+
 	}
-		
+	else
+		animationStep = 0.1;
+
+
 
 }
 

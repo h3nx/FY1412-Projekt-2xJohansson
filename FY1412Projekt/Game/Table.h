@@ -32,6 +32,9 @@ public:
 	void beginShot();
 	void endShot(Eigen::Vector3f mPos);
 	float shotTime;
+	Eigen::Vector3f mPos;
+	Eigen::Vector3f shotPos;
+	
 
 private:
 	Ball* balls;

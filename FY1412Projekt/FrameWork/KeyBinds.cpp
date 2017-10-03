@@ -48,6 +48,11 @@ bool KeyBinds::isBindDown(unsigned int bind)
 	return this->keys[this->keybinds[bind].bind].active;
 }
 
+bool KeyBinds::toggled(unsigned int key)
+{
+	return this->keys[key].toggled;
+}
+
 KeyBinds::Bind KeyBinds::getKeyBind(unsigned int index)
 {
 	return this->keybinds[index];
@@ -68,4 +73,8 @@ void KeyBinds::lock(unsigned int key)
 {
 	if (this->keys[key].active)
 		this->keys[key].locked = true;
+}
+
+void KeyBinds::toggle(unsigned int key, bool value)
+{
 }
