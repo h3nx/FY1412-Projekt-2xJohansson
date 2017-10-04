@@ -91,11 +91,11 @@ void Table::updateActors(float dt)
 
 	if (this->shooting == 1)
 	{
-		if (this->shotTime < 4)
+		if (this->shotTime < 3)
 		{
-			this->shotTime = this->time->getTime() * 2;
-			if (this->shotTime > 4)
-				this->shotTime = 4;
+			this->shotTime = this->time->getTime() * 1;
+			if (this->shotTime > 3)
+				this->shotTime = 3;
 		}
 	}
 	if(shooting == -1)
@@ -109,7 +109,7 @@ void Table::updateActors(float dt)
 	if (this->balls[0].getVelocity().squaredNorm() == 0)
 		this->cue->setPosition(this->balls[0].getPosition() + (relPos*(this->shotTime + 0.1)));
 	else
-		this->cue->setPosition(this->balls[0].getPosition() + (relPos*(this->shotTime + 0.1)) * 1000);
+		this->cue->setPosition(Eigen::Vector3f(100,100,100));
 
 	if (this->shooting)
 	{
@@ -121,10 +121,10 @@ void Table::updateActors(float dt)
 		}
 		if (this->shooting == -1)
 		{
-			animationStep -= dt * 3;
+			animationStep -= dt * 4;
 			this->cue->setPosition(this->balls[0].getPosition() + (relPos*(animationStep)));
 			
-			if (animationStep < 0.0)
+			if (animationStep < 0.05)
 			{
 				this->balls[0].hit(-relPos*this->shotTime, 0.1, 5);
 				this->shooting = 0;
