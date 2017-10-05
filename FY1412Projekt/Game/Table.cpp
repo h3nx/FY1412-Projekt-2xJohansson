@@ -44,7 +44,6 @@ void Table::update(float dt)
 {
 	
 	this->updateActors(dt);
-	
 
 }
   
@@ -72,6 +71,9 @@ void Table::endShot(Eigen::Vector3f mPos)
 {	
 	this->shotPos = this->mPos;
 	this->shooting = -1;
+
+	this->updateCuePos(Eigen::Vector2f(mPos[0], mPos[1]));
+	this->balls[0].hit(this->balls[0].getPosition() - this->mPos, Eigen::Vector2f(0, 0), 0.1, 5);
 }
 void Table::updateActors(float dt)
 {
@@ -88,7 +90,7 @@ void Table::updateActors(float dt)
 	}
 
 	//Cue animation
-
+	/*
 	if (this->shooting == 1)
 	{
 		if (this->shotTime < 3)
@@ -126,7 +128,7 @@ void Table::updateActors(float dt)
 			
 			if (animationStep < 0.05)
 			{
-				this->balls[0].hit(-relPos*this->shotTime, 0.1, 5);
+				this->balls[0].hit(-relPos*this->shotTime, 0.1, 10);
 				this->shooting = 0;
 				this->shotTime = 0;
 			}
@@ -136,7 +138,7 @@ void Table::updateActors(float dt)
 	}
 	else
 		animationStep = 0.1;
-
+*/
 
 
 }
