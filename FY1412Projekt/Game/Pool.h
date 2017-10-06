@@ -20,11 +20,11 @@ using namespace Eigen;
 typedef enum shootingStatus { RELEASING = -1, WAITING, DRAWING };
 
 
-class Table
+class Pool
 {
 public:
-	Table();
-	~Table();
+	Pool();
+	~Pool();
 
 	void update(float dt);
 
@@ -39,6 +39,7 @@ public:
 private:
 	Ball* balls;
 	Cue* cue;
+	
 	int shooting;
 	Timer* time;
 
@@ -54,6 +55,10 @@ private:
 	void shoot(int ballID, Eigen::Vector3f velocity, Eigen::Vector3f hitPos);
 	void updateActors(float dt);
 	void cueAnimation(float dt);
+	void collisionTest();
+
+	bool collision(Ball b1, Ball b2);
+//	bool collision(Ball b1, Table table);
 
 };
 

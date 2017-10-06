@@ -216,7 +216,7 @@
     <ClCompile Include="FrameWork\Settings.cpp" />
     <ClCompile Include="FrameWork\Timer.cpp" />
     <ClCompile Include="FrameWork\AppWindow.cpp" />
-    <ClCompile Include="Game\Table.cpp" />
+    <ClCompile Include="Game\Pool.cpp" />
     <ClCompile Include="sfmlRender\sfmlGraphics.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -232,7 +232,7 @@
     <ClInclude Include="FrameWork\Struct.h" />
     <ClInclude Include="FrameWork\Timer.h" />
     <ClInclude Include="FrameWork\AppWindow.h" />
-    <ClInclude Include="Game\Table.h" />
+    <ClInclude Include="Game\Pool.h" />
     <ClInclude Include="sfmlRender\sfmlGraphics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

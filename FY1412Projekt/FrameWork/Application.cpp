@@ -13,7 +13,7 @@ Application::Application()
 	this->mControl = new MouseController(Eigen::Vector2f(this->settings->getResolution().x,this->settings->getResolution().y));
 	this->renderEngine = nullptr;
 
-	this->table = new Table();
+	this->table = new Pool();
 	this->acc = 0;
 }
 

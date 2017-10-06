@@ -1,8 +1,8 @@
-#include "Table.h"
+#include "Pool.h"
 
 
 
-Table::Table()
+Pool::Pool()
 {
 	this->balls = new Ball[15];
 	this->time = new Timer();
@@ -35,47 +35,47 @@ Table::Table()
 	this->cue->setID(15);
 
 }
-Table::~Table()
+Pool::~Pool()
 {
 	delete[] this->balls;
 	delete this->cue;
 }
 
-void Table::update(float dt)
+void Pool::update(float dt)
 {
 	
 	this->updateActors(dt);
 
 }
   
-Actor * Table::getBall(unsigned int id)
+Actor * Pool::getBall(unsigned int id)
 {
 	return &this->balls[id];
 }
-Actor * Table::getCue()
+Actor * Pool::getCue()
 {
 	return this->cue;
 }
 
-void Table::updateCuePos(Eigen::Vector2f mPos)
+void Pool::updateCuePos(Eigen::Vector2f mPos)
 {
 	this->mPos = Eigen::Vector3f(mPos[0], mPos[1], 0)*this->pixelSize;
 
 
 }
-void Table::beginShot()
+void Pool::beginShot()
 {
 	this->time->reset();
 	this->shooting = 1;
 	this->drawBackDir = (this->mPos-this->balls[0].getPosition()).normalized(); // Vec: mus till boll
 	this->drawBack = this->drawBackDir*this->balls[0].getRadius() * 3;
 }
-void Table::endShot(Eigen::Vector3f mPos)
+void Pool::endShot(Eigen::Vector3f mPos)
 {	
 	this->shooting = -1;
 	this->shotVec = drawBack;
 }
-void Table::updateActors(float dt)
+void Pool::updateActors(float dt)
 {
 	//Balls
 	for (int i = 0; i < 15; i++)
@@ -87,7 +87,7 @@ void Table::updateActors(float dt)
 
 }
 
-void Table::cueAnimation(float dt)
+void Pool::cueAnimation(float dt)
 {
 	static float animationStep = 0;
 	static int direction;
@@ -136,7 +136,9 @@ void Table::cueAnimation(float dt)
 
 
 
-	/*
+	/*					///// old version /////
+
+
 	if (this->shooting == 1)
 	{
 		if (this->shotTime < 3)
@@ -189,6 +191,24 @@ void Table::cueAnimation(float dt)
 		*/
 
 
+
+}
+
+void Pool::collisionTest()
+{
+
+	for (int i = 0; i < 7; i++)
+	{
+		// balls
+		for (int u = 0; u < 15; u++)
+		{
+
+
+
+		}
+		// table
+	}
+	
 
 }
 
