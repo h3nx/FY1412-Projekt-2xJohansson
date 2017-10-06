@@ -103,6 +103,13 @@ void Application::render()
 	this->renderEngine->renderText(to_string(this->time->getFPS()), 0, 60);
 	this->renderEngine->renderText(to_string(this->acc), 0, 120);
 	//this->renderEngine->renderText(to_string(this->table->shotTime), 0, 180);
+
+	std::stringstream s1, s2;
+	s1 << this->table->drawBackDir;
+	this->renderEngine->renderText(s1.str(),0,200);
+	s2 << this->table->drawBack;
+	this->renderEngine->renderText(s2.str(), 0, 400);
+
 	
 	this->renderEngine->endRender();
 }

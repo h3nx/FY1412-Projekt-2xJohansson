@@ -33,6 +33,8 @@ public:
 	void updateCuePos(Eigen::Vector2f mPos);
 	void beginShot();
 	void endShot(Eigen::Vector3f mPos);
+	Eigen::Vector3f drawBackDir;
+	Eigen::Vector3f drawBack;
 
 private:
 	Ball* balls;
@@ -43,8 +45,6 @@ private:
 	Eigen::Vector2f ballHit;
 	float shotTime;
 	Eigen::Vector3f mPos;
-	Eigen::Vector3f drawBackDir;
-	Eigen::Vector3f drawBack;
 	Eigen::Vector3f shotVec;
 
 	float pixelSize;

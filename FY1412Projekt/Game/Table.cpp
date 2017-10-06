@@ -99,12 +99,12 @@ void Table::cueAnimation(float dt)
 	{
 		if (this->shooting == DRAWING)
 		{
-			if(this->drawBack.squaredNorm() < 2)
-			this->drawBack += this->drawBackDir * 1.5 * dt; // x * dt m/s
+			if(this->drawBack.squaredNorm() < pow(1,2))
+			this->drawBack += this->drawBackDir * 0.75 * dt; // x * dt m/s
 		}
 		if (this->shooting == RELEASING)
 		{
-			this->drawBack += this->drawBackDir * -3 * dt; // x * dt m/s
+			this->drawBack += this->drawBackDir * -2 * dt; // x * dt m/s
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
 				this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
