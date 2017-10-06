@@ -1,8 +1,9 @@
 #pragma once
 #ifndef Actoraaa_H
 #define Actoraaa_H
-#include "../Eigen/Core"
-
+//#include "../Eigen/Core"
+#include "../Eigen/Dense"
+#include "../Eigen/Geometry"
 using namespace Eigen;
 
 class Actor

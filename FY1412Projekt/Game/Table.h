@@ -17,6 +17,8 @@ using namespace Eigen;
 #define TABLESIZE_X 2.6
 #define TABLESIZE_Y TABLESIZE_X*0.5;
 
+typedef enum shootingStatus { RELEASING = -1, WAITING, DRAWING };
+
 
 class Table
 {
@@ -31,10 +33,6 @@ public:
 	void updateCuePos(Eigen::Vector2f mPos);
 	void beginShot();
 	void endShot(Eigen::Vector3f mPos);
-	float shotTime;
-	Eigen::Vector3f mPos;
-	Eigen::Vector3f shotPos;
-	
 
 private:
 	Ball* balls;
@@ -42,6 +40,12 @@ private:
 	int shooting;
 	Timer* time;
 
+	Eigen::Vector2f ballHit;
+	float shotTime;
+	Eigen::Vector3f mPos;
+	Eigen::Vector3f drawBackDir;
+	Eigen::Vector3f drawBack;
+	Eigen::Vector3f shotVec;
 
 	float pixelSize;
 private:
@@ -49,7 +53,7 @@ private:
 
 	void shoot(int ballID, Eigen::Vector3f velocity, Eigen::Vector3f hitPos);
 	void updateActors(float dt);
-
+	void cueAnimation(float dt);
 
 };
 

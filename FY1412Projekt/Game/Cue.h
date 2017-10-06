@@ -8,6 +8,11 @@ public:
 	~Cue();
 	void update();
 
+	void setMass(float mass);
+	void setFriction(float friction);
+
+	float getMass();
+	float getFriction();
 
 private:
 	float mass;

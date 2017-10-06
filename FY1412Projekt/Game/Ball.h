@@ -16,6 +16,8 @@ public:
 	Ball();
 	Ball(Eigen::Vector3f position, float radius, float mass, float friction);
 	~Ball();
+	
+	
 
 	void update(float delta);
 
@@ -26,6 +28,7 @@ public:
 	void setFriction(float friction);
 
 	float getRadius();
+	float getR2();
 	float getMass();
 	float getFriction();
 
@@ -33,6 +36,7 @@ public:
 private:
 	status current_status;
 	float radius;
+	float r2;
 	float mass;
 	float friction;
 

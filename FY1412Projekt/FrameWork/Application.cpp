@@ -102,7 +102,7 @@ void Application::render()
 	this->renderEngine->renderText(to_string(this->time->getAvg()), 0, 0);
 	this->renderEngine->renderText(to_string(this->time->getFPS()), 0, 60);
 	this->renderEngine->renderText(to_string(this->acc), 0, 120);
-	this->renderEngine->renderText(to_string(this->table->shotTime), 0, 180);
+	//this->renderEngine->renderText(to_string(this->table->shotTime), 0, 180);
 	
 	this->renderEngine->endRender();
 }
