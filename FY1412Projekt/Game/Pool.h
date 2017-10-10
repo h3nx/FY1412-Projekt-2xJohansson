@@ -3,6 +3,7 @@
 #include "../FrameWork/Actor.h"
 #include "Ball.h"
 #include "Cue.h"
+#include "Table.h"
 #include "SFML\Graphics.hpp"
 #include "../FrameWork/Timer.h"
 #include "../Eigen/Geometry"
@@ -12,7 +13,7 @@ using namespace Eigen;
 //#define u_BALL_CLOTH_SLIDE 0.2f
 //#define u_BALL_CLOTH_ROLL 0.01f
 #define mass_BALL 0.165f //kg
-//#define radius_BALL 0.0286f
+#define radius_BALL 0.0286f
 
 #define PIXEL_SIZE 0.002767f/4.0f // 16:9 24" 1920*1080
 #define TABLESIZE_X 2.6
@@ -40,6 +41,7 @@ public:
 private:
 	Ball* balls;
 	Cue* cue;
+	Table* table;
 	
 	int shooting;
 	Timer* time;
@@ -50,6 +52,7 @@ private:
 	Eigen::Vector3f shotVec;
 
 	float pixelSize;
+
 private:
 
 
@@ -58,8 +61,8 @@ private:
 	void cueAnimation(float dt);
 	void collisionTest();
 
-	bool collision(unsigned int id1, unsigned int id2);
-//	bool collision(Ball b1, Table table);
+	bool collision(Ball b1, Ball b2);
+	bool collision(int ballId);
 
 };
 

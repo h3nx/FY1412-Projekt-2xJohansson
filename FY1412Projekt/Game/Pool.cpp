@@ -7,11 +7,15 @@ Pool::Pool()
 	this->balls = new Ball[15];
 	this->time = new Timer();
 	this->cue = new Cue();
+	this->table = new Table();
 	this->pixelSize =  (2.6 / (1920*0.9));
 	this->shooting = 0;
 	this->shotTime = 0;
 	this->ballHit = Eigen::Vector2f(0, 0);
 
+
+	this->table->setPosition(Eigen::Vector3f(1.3, 0.75, 0));
+	this->table->setSize(Eigen::Vector3f(1.223, 0.673, 0));
 
 	// ball init
 	for (int i = 0; i < 15; i++)
@@ -45,6 +49,7 @@ void Pool::update(float dt)
 {
 	
 	this->updateActors(dt);
+	this->collisionTest();
 
 
 
@@ -109,9 +114,9 @@ void Pool::cueAnimation(float dt)
 			this->drawBack += this->drawBackDir * -2 * dt; // x * dt m/s
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
-				this->balls[0].hit(-this->shotVec*2, this->ballHit, 0.1, 3);
+				this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
 				//Eigen::Vector3f p = this->balls[0].getPosition();
-				//this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(0, p[1] - 0.01, 0));
+				//this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(p[0] - radius_BALL, p[1] - radius_BALL - 0.01, 0));
 				this->shooting = WAITING;
 				this->cue->setPosition(Eigen::Vector3f(-10,-10,0));
 			}
@@ -212,6 +217,50 @@ void Pool::collisionTest()
 		}
 		// table
 
+		}
+		// table
+	for (int u = 0; u < 1; u++){	
+		//this->collision(this->balls[u], *this->table);	
+		this->collision(u);
+	}
+
+
+}
+
+bool Pool::collision(int ballId)
+{
+	Eigen::Vector3f v = this->balls[ballId].getVelocity();
+	Eigen::Vector3f table_pos = this->table->getPosition();
+	Eigen::Vector3f table_size = this->table->getSize();
+
+	int collision = 0;
+	int k = 0;
+	if (this->balls[ballId].getPosition()[1] - radius_BALL <= table_pos[1] - table_size[1]) {
+		collision = 1; //top
+		this->balls[ballId].setPosition(Eigen::Vector3f(this->balls[ballId].getPosition()[0], table_pos[1] - table_size[1] + radius_BALL, 0));
+		k = 1;
+	}
+	else if (this->balls[ballId].getPosition()[1] + radius_BALL >= table_pos[1] + table_size[1]) {
+		collision = 2; //bot
+		this->balls[ballId].setPosition(Eigen::Vector3f(this->balls[ballId].getPosition()[0], table_pos[1] + table_size[1] - radius_BALL, 0));
+		k = 1;
+	}
+	else if (this->balls[ballId].getPosition()[0] - radius_BALL <= table_pos[0] - table_size[0]) {
+		collision = 3; //left
+		this->balls[ballId].setPosition(Eigen::Vector3f(table_pos[0] - table_size[0] + radius_BALL, this->balls[ballId].getPosition()[1], 0));
+	}
+	else if (this->balls[ballId].getPosition()[0] + radius_BALL >= table_pos[0] + table_size[0]) {
+		collision = 4; //right
+		this->balls[ballId].setPosition(Eigen::Vector3f(table_pos[0] + table_size[0] - radius_BALL, this->balls[ballId].getPosition()[1], 0));
+	}
+
+	if (collision > 0) {
+		Eigen::Vector3f u(0, 0, 0);
+		u[k] = v[k] * e_BALL_WALL * -1;
+		float dvy = u[1] - this->balls[ballId].getVelocity()[1];
+		u[1-k] = v[1-k] * 5 / 7;
+		this->balls[ballId].setVelocity(u);
+		this->balls[ballId].setAcceleration(u.normalized() * u_BALL_CLOTH_ROLL * g_ * -1);
 	}
 	
 
@@ -255,6 +304,9 @@ bool Pool::collision(unsigned int id1, unsigned int id2)
 	Eigen::Vector2f v12(v1x, v1y);
 	Eigen::Vector2f v22(v2x, v2y);
 
+	}
+	return true;
+}
 
 
 	return true;
