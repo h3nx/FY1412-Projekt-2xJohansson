@@ -23,7 +23,7 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	this->windowSpec.resolution = settings->getResolution();
 	this->windowSpec.fullScreen = settings->getFullScreen();
 	this->windowSpec.vSync = settings->getVsync();
-	this->pixelSize = 1/(2.6 / (this->windowSpec.resolution.x*0.9));
+	this->pixelSize = 1/(2.6 / (this->windowSpec.resolution.x));
 	
 
 	if (!font1.loadFromFile("BebasNeue.otf"))
