@@ -26,7 +26,7 @@ Pool::Pool()
 
 
 	//tmp whiteball
-	this->balls[0].setPosition(Eigen::Vector3f(1, 1, 0));
+	this->balls[0].setPosition(Eigen::Vector3f(0, 0, 0));
 	this->balls[0].setVelocity(Eigen::Vector3f(0, 0, 0));
 	this->balls[0].setAcceleration(Eigen::Vector3f(0, 0, 0));
 
@@ -107,7 +107,9 @@ void Pool::cueAnimation(float dt)
 			this->drawBack += this->drawBackDir * -2 * dt; // x * dt m/s
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
-				this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
+				//this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
+				Eigen::Vector3f p = this->balls[0].getPosition();
+				this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(p[0] - radius_BALL, p[1] - 0.01, 0));
 				this->shooting = WAITING;
 				this->cue->setPosition(Eigen::Vector3f(-10,-10,0));
 			}

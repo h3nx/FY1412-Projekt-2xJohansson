@@ -53,6 +53,32 @@ void Ball::hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float 
 	current_status = SLIDE;
 }
 
+void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector3f hit_pos)
+{
+	Eigen::Vector3f ep = (this->getPosition() - hit_pos).normalized();
+	Eigen::Matrix3f m;
+	m << 0, 1, 0,
+		-1, 0, 0,
+		 0, 0, 1;
+	
+
+	Eigen::Vector3f en = m * ep;
+	float Vcp = vel_cue.dot(ep);
+	float Ubp = (1 + e_CUE_BALL)*mass_CUE * Vcp / (mass_BALL + mass_CUE);
+		
+	this->setVelocity(Ubp*(ep + /*u_ball_cue*/en));
+
+	//this->setVelocity(vel_cue * (1 + e_CUE_BALL)* mass_CUE / (mass_BALL + mass_CUE));
+
+	
+
+	//from friction in travel direction
+	this->setAcceleration(vel_cue.normalized() * u_BALL_CLOTH_SLIDE * g_ * -1);		//deacceleration
+	this->setRotationAcceleration(vel_cue.normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_SLIDE * g_ / (0.4 * radius_BALL));	//rotation (perpendicular to friction)
+
+	current_status = SLIDE;
+}
+
 void Ball::setRadius(float radius)
 {
 	this->radius = radius;

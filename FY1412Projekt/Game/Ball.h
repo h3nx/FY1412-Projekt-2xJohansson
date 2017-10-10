@@ -3,8 +3,11 @@
 
 #define u_BALL_CLOTH_SLIDE 0.2f
 #define u_BALL_CLOTH_ROLL 0.01f
-#define mass_BALL 0.165f //kg
+#define mass_BALL 0.165f 
+#define mass_CUE 0.540f 
 #define radius_BALL 0.0286f
+#define e_CUE_BALL 0.1
+#define e_BALL_BALL 0.95
 #define g_ 9.82f
 
 typedef enum status{ STOP, SLIDE, ROLL };
@@ -22,6 +25,7 @@ public:
 	void update(float delta);
 
 	void hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float t_on_ball, float k_spring);
+	void hit(Eigen::Vector3f vel_cue, Eigen::Vector3f hit_pos);
 
 	void setRadius(float radius);
 	void setMass(float mass);
