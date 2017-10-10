@@ -35,7 +35,7 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	this->poolTable.setPosition(this->windowSpec.resolution.x, this->windowSpec.resolution.y);
 	this->poolTable.setSize(sf::Vector2f(2.6*this->pixelSize, 1.3*this->pixelSize));
 	this->poolTable.setPosition(this->windowSpec.resolution.x *0.05, this->windowSpec.resolution.y *0.05);
-
+	//this->poolTable.setTexture
 
 
 	for (int i = 0; i < 15; i++)

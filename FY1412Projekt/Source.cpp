@@ -6,6 +6,8 @@ using namespace Eigen;
 Application app;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
+#define PI 3.14159265
+#define rad PI/180
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	MSG msg = { 0 };

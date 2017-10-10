@@ -5,6 +5,7 @@
 #include "Cue.h"
 #include "SFML\Graphics.hpp"
 #include "../FrameWork/Timer.h"
+#include "../Eigen/Geometry"
 
 using namespace Eigen;
 
@@ -57,7 +58,7 @@ private:
 	void cueAnimation(float dt);
 	void collisionTest();
 
-	bool collision(Ball b1, Ball b2);
+	bool collision(unsigned int id1, unsigned int id2);
 //	bool collision(Ball b1, Table table);
 
 };
