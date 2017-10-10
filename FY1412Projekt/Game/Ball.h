@@ -9,7 +9,7 @@
 #define radius_BALL 0.0286f
 #define e_CUE_BALL 0.1
 #define e_BALL_BALL 0.95
-#define e_BALL_WALL 0.5
+#define e_BALL_WALL 0.1
 #define g_ 9.82f
 
 typedef enum status{ STOP, SLIDE, ROLL };

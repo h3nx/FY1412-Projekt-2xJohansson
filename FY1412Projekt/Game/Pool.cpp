@@ -217,8 +217,9 @@ void Pool::collisionTest()
 		}
 		// table
 
-		}
-		// table
+	}
+	
+	// table
 	for (int u = 0; u < 1; u++){	
 		//this->collision(this->balls[u], *this->table);	
 		this->collision(u);
@@ -263,6 +264,8 @@ bool Pool::collision(int ballId)
 		this->balls[ballId].setAcceleration(u.normalized() * u_BALL_CLOTH_ROLL * g_ * -1);
 	}
 	
+	return true;
+
 
 }
 
@@ -304,13 +307,11 @@ bool Pool::collision(unsigned int id1, unsigned int id2)
 	Eigen::Vector2f v12(v1x, v1y);
 	Eigen::Vector2f v22(v2x, v2y);
 
-	}
+	
 	return true;
 }
 
 
-	return true;
-}
 
 
 

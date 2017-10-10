@@ -61,7 +61,7 @@ private:
 	void cueAnimation(float dt);
 	void collisionTest();
 
-	bool collision(Ball b1, Ball b2);
+	bool collision(unsigned int id1, unsigned int id2);
 	bool collision(int ballId);
 
 };
