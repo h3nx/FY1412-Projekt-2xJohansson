@@ -123,21 +123,31 @@ Eigen::Vector3f Actor::getRotationAcceleration()
 
 void Actor::update(float delta)
 {
-	this->move(delta);
-	this->rotate(delta);
+	//this->move(delta);
+	//this->rotate(delta);
 }
 void Actor::move(float delta)
 {
 	this->velocity += this->acceleration * delta;
 	this->position += this->velocity * delta;
 	
-	this->rotationVelocity += this->rotationAcceleration * delta;
-	this->rotation += this->rotationVelocity * delta;
+	//this->rotationVelocity += this->rotationAcceleration * delta;
+	//this->rotation += this->rotationVelocity * delta;
 
 
 }
 void Actor::rotate(float delta	)
-{
+{	
+	//z rotation will stop if hitting 0 or going between +/-
+	if (this->rotationAcceleration[2] != 0) {
+		float oldZ = this->rotationVelocity[2], newZ = oldZ + this->rotationAcceleration[2] * delta;
+		if ((oldZ < 0 && newZ >= 0) ||
+			(oldZ > 0 && newZ <= 0)) {
+			this->rotationVelocity[2] = 0;
+			this->rotationAcceleration[2] = 0;
+		}
+	}
+	
 	this->rotationVelocity += this->rotationAcceleration * delta;
 	this->rotation += this->rotationVelocity * delta;
 	

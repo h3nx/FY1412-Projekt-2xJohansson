@@ -114,7 +114,8 @@ void Pool::cueAnimation(float dt)
 			this->drawBack += this->drawBackDir * -2 * dt; // x * dt m/s
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
-				this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
+				//this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
+				this->balls[0].hit(-this->shotVec, Eigen::Vector2f(0, 0));
 				//Eigen::Vector3f p = this->balls[0].getPosition();
 				//this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(p[0] - radius_BALL, p[1] - radius_BALL - 0.01, 0));
 				this->shooting = WAITING;
@@ -235,7 +236,7 @@ bool Pool::collision(int ballId)
 	Eigen::Vector3f table_size = this->table->getSize();
 
 	int collision = 0;
-	int k = 0;
+	int k = 0; //to flip ep and en
 	if (this->balls[ballId].getPosition()[1] - radius_BALL <= table_pos[1] - table_size[1]) {
 		collision = 1; //top
 		this->balls[ballId].setPosition(Eigen::Vector3f(this->balls[ballId].getPosition()[0], table_pos[1] - table_size[1] + radius_BALL, 0));

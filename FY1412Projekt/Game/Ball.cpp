@@ -33,7 +33,7 @@ void Ball::update(float delta)
 		this->setVelocity(Eigen::Vector3f(0, 0, 0));
 	}
 	this->move(delta);
-	//this->rotate(delta);
+	this->rotate(delta);
 
 }
 void Ball::hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float t_on_ball, float spring_k)
@@ -53,7 +53,7 @@ void Ball::hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float 
 	current_status = SLIDE;
 }
 
-void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector3f hit_pos)
+void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 {
 	/*Eigen::Vector3f ep = (this->getPosition() - hit_pos).normalized();
 	Eigen::Matrix3f m;
@@ -67,18 +67,22 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector3f hit_pos)
 	float Ubp = (1 + e_CUE_BALL)*mass_CUE * Vcp / (mass_BALL + mass_CUE);
 		
 	this->setVelocity(Ubp*(ep + u_BALL_CUE*en));*/
-	
-	this->setVelocity((1 + e_CUE_BALL)*mass_CUE * vel_cue / (mass_BALL + mass_CUE));
-
-	//this->setVelocity(vel_cue * (1 + e_CUE_BALL)* mass_CUE / (mass_BALL + mass_CUE));
-
-	
+	Eigen::Vector3f v = (1 + e_CUE_BALL)*mass_CUE * vel_cue / (mass_BALL + mass_CUE);
+	this->setVelocity(v);
+		
+	float w;
+	w = (hit_pos[0] * mass_CUE * vel_cue.norm()) / (0.4 * mass_BALL * radius_BALL *  radius_BALL);
+	this->setRotationVelocity(Eigen::Vector3f(0, 0, w));
 
 	//from friction in travel direction
-	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_SLIDE * g_ * -1);		//deacceleration
-	this->setRotationAcceleration(vel_cue.normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_SLIDE * g_ / (0.4 * radius_BALL));	//rotation (perpendicular to friction)
+	this->setAcceleration(v.normalized() * u_BALL_CLOTH_SLIDE * g_ * -1);		//deacceleration
+	Eigen::Vector3f a_rota = v.normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_SLIDE * g_ / (0.4 * radius_BALL);
+	a_rota[2] = a_rota_BALL_CLOTH;
+	this->setRotationAcceleration(a_rota);
 
-	current_status = SLIDE;
+
+
+ 	current_status = SLIDE;
 }
 
 void Ball::setRadius(float radius)
