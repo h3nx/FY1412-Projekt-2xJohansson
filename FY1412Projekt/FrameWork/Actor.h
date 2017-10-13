@@ -27,14 +27,9 @@ public:
 	void setSize(Eigen::Vector3f size);
 	void setID(unsigned int id);
 
+	void changePosition(Eigen::Vector3f delta);
 	void changeVelocity(Eigen::Vector3f delta);
 	void changeRotationVelocity(Eigen::Vector3f delta);
-
-	void addHitbox(Eigen::Vector3f position, float radius);
-	void addHitBox(Eigen::Vector3f position, Eigen::Vector3f sides);
-
-	bool collision(Actor& other);
-
 
 	Eigen::Vector3f getPosition();
 	Eigen::Vector3f getRotation();  

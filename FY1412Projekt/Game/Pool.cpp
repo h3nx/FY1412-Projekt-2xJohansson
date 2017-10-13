@@ -8,29 +8,26 @@ Pool::Pool()
 	this->time = new Timer();
 	this->cue = new Cue();
 	this->table = new Table();
-	this->pixelSize =  (2.6 / (1920*0.9));
+	this->pixelSize =  (2.6 / (1920-100));
 	this->shooting = 0;
 	this->shotTime = 0;
 	this->ballHit = Eigen::Vector2f(0, 0);
 
 
-	this->table->setPosition(Eigen::Vector3f(1.3, 0.75, 0));
-	this->table->setSize(Eigen::Vector3f(1.223, 0.673, 0));
+	this->table->setPosition(Eigen::Vector3f(1.3, 0.65, 0));
+	this->table->setSize(Eigen::Vector3f(1.223, 0.573, 0));
 
 	// ball init
 	for (int i = 0; i < 15; i++)
 	{
-		this->balls[i].setPosition(Eigen::Vector3f(i*0.05, i*0.05, 0));
+		
 		this->balls[i].setMass(mass_BALL);
-		this->balls[i].setVelocity(Eigen::Vector3f(0.01, 0, 0));
-		this->balls[i].setAcceleration(Eigen::Vector3f(0, 0.00001, 0));
 		this->balls[i].setRadius(0.0286);
 		this->balls[i].setID(i);
 	}
 
-
+	this->setBalls();
 	//tmp whiteball
-	this->balls[0].setPosition(Eigen::Vector3f(1, 1, 0));
 	this->balls[0].setVelocity(Eigen::Vector3f(0, 0, 0));
 	this->balls[0].setAcceleration(Eigen::Vector3f(0, 0, 0));
 
@@ -49,7 +46,7 @@ void Pool::update(float dt)
 {
 	
 	this->updateActors(dt);
-	this->collisionTest();
+	this->collisionTest(dt);
 
 
 
@@ -67,20 +64,49 @@ Actor * Pool::getCue()
 void Pool::updateCuePos(Eigen::Vector2f mPos)
 {
 	this->mPos = Eigen::Vector3f(mPos[0], mPos[1], 0)*this->pixelSize;
-
+	
 
 }
 void Pool::beginShot()
 {
-	this->time->reset();
-	this->shooting = 1;
-	this->drawBackDir = (this->mPos-this->balls[0].getPosition()).normalized(); // Vec: mus till boll
-	this->drawBack = this->drawBackDir*this->balls[0].getRadius() * 3;
+	if (this->mPos[0] <= 2.6 && this->mPos[1] < 1.3)
+	{
+		this->time->reset();
+		this->shooting = 1;
+		this->drawBackDir = (this->mPos - this->balls[0].getPosition()).normalized(); // Vec: mus till boll
+		this->drawBack = this->drawBackDir*this->balls[0].getRadius() * 3;
+	}
+	else if (this->mPos[0] > 2.6 && this->mPos[1] < 0.135)
+	{
+		Eigen::Vector2f pos(
+			(this->mPos[0] - 2.6) / 2.3,
+			this->mPos[1] / 2.3);
+		pos -= Eigen::Vector2f(0.0286, 0.0286);
+		if (pos.squaredNorm() < pow(0.0286, 2))
+			this->ballHit = pos;
+	}
+	
 }
 void Pool::endShot(Eigen::Vector3f mPos)
 {	
-	this->shooting = -1;
-	this->shotVec = drawBack;
+	if (this->shooting)
+	{
+		this->shooting = -1;
+		this->shotVec = drawBack;
+	}
+}
+void Pool::setScreenSize(unsigned int x, unsigned int y)
+{
+	this->pixelSize = (2.6 / (x-100));
+}
+void Pool::setBalls()
+{
+	this->balls[0].setPosition(Eigen::Vector3f(0.5, 0.65, 0));
+	for (int i = 1; i < 15; i++)
+	{
+		this->balls[i].setPosition(Eigen::Vector3f(i*0.1+0.3, 0.5, 0));
+	}
+
 }
 void Pool::updateActors(float dt)
 {
@@ -106,16 +132,16 @@ void Pool::cueAnimation(float dt)
 	{
 		if (this->shooting == DRAWING)
 		{
-			if(this->drawBack.squaredNorm() < pow(1,2))
+			if(this->drawBack.squaredNorm() < pow(0.5,2))
 			this->drawBack += this->drawBackDir * 0.75 * dt; // x * dt m/s
 		}
 		if (this->shooting == RELEASING)
 		{
-			this->drawBack += this->drawBackDir * -2 * dt; // x * dt m/s
+			this->drawBack += this->drawBackDir *( this->shotVec.norm()*4 * -dt); // x * dt m/s
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
 				//this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
-				this->balls[0].hit(-this->shotVec, Eigen::Vector2f(0, 0));
+				this->balls[0].hit(-this->shotVec*4, Eigen::Vector2f(0, 0));
 				//Eigen::Vector3f p = this->balls[0].getPosition();
 				//this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(p[0] - radius_BALL, p[1] - radius_BALL - 0.01, 0));
 				this->shooting = WAITING;
@@ -142,93 +168,31 @@ void Pool::cueAnimation(float dt)
 	}
 	this->cue->setRotation(Eigen::Vector3f(0, 0, angle));
 
-
-
-
-
-	/*					///// old version /////
-
-
-	if (this->shooting == 1)
-	{
-		if (this->shotTime < 3)
-		{
-			
-
-			this->shotTime = this->time->getTime() * 1;
-			if (this->shotTime > 3)
-				this->shotTime = 3;
-		}
-	}
-	if (shooting == -1)
-		relPos = (this->shotPos - this->balls[0].getPosition()).normalized();
-	else
-		relPos = (this->mPos - this->balls[0].getPosition()).normalized();
-
-	float angle = atan2(relPos[1], relPos[0])*(180 / 3.14) - 90;
-	this->cue->setRotation(Eigen::Vector3f(0, 0, angle));
-
-	if (this->balls[0].getVelocity().squaredNorm() == 0)
-		this->cue->setPosition(this->balls[0].getPosition() + (relPos*(this->shotTime + 0.1)));
-	else
-		this->cue->setPosition(Eigen::Vector3f(100, 100, 100));
-
-	if (this->shooting)
-	{
-		if (this->shooting == 1)
-		{
-			animationStep = this->shotTime;
-
-
-		}
-		if (this->shooting == -1)
-		{
-			animationStep -= dt * 4;
-			this->cue->setPosition(this->balls[0].getPosition() + (relPos*(animationStep)));
-
-			if (animationStep < 0.05)
-			{
-				this->balls[0].hit(-relPos*this->shotTime, this->ballHit, 0.1, 10);
-				this->shooting = 0;
-				this->shotTime = 0;
-			}
-
-		}
-
-	}
-	else
-		animationStep = 0.1;
-		*/
-
-
-
 }
 
-void Pool::collisionTest()
+void Pool::collisionTest(float dt)
 {
 
 	for (int i = 0; i < 7; i++)
 	{
 		// balls
-		for (int u = 0; u < 15; u++)
+		for (int u = 1; u < 15; u++)
 		{
-			//this->collision(i, u);
-
-
+			if(i!=u)
+				this->collision(i, u, dt);
 		}
 		// table
 
 	}
 	
 	// table
-	for (int u = 0; u < 1; u++){	
+	for (int u = 0; u < 15; u++){	
 		//this->collision(this->balls[u], *this->table);	
 		this->collision(u);
 	}
 
 
 }
-
 bool Pool::collision(int ballId)
 {
 	Eigen::Vector3f v = this->balls[ballId].getVelocity();
@@ -269,28 +233,33 @@ bool Pool::collision(int ballId)
 
 
 }
-
-bool Pool::collision(unsigned int id1, unsigned int id2)
+bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 {
 	static float PI = 3.14159265;
 	static float rad = PI / 180;
-
+	static float rot = rad * 90;
 
 
 	Eigen::Vector3f n = this->balls[id1].getPosition() - this->balls[id2].getPosition();
 	float l2 = n.squaredNorm();
-	float r2 = this->balls[id1].getRadius();
-	if (l2 > r2)
+	float r2 = pow(this->balls[id1].getRadius()*2,2);
+	if (l2 >= r2)
 		return false;
 	
-	Eigen::Vector3f v1(8, 0, 0);
-	Eigen::Vector3f v2(0, 0, 0);
-	float angle = 0 * rad;
-	Eigen::Rotation2D<float> r(angle*rad);
+	this->balls[id1].changePosition(-this->balls[id1].getVelocity()*delta);
+	this->balls[id2].changePosition(-this->balls[id2].getVelocity()*delta);
+		
 
+	Eigen::Vector3f v1(this->balls[id1].getVelocity());
+	Eigen::Vector3f v2(this->balls[id2].getVelocity());
+	
+	float angle = atan2(n[1],n[0])+rot;
+	Eigen::AngleAxis<float> r(angle, Eigen::Vector3f(0,0,1));
+	v1 = r * v1;
 
-	float m1 = 10, m2 = 5;
-	float e = 0.9;
+	float m1 = this->balls[id1].getMass();
+	float m2 = m1;
+	float e = 0.7;
 	float v1p = v1[0] * cos(angle) + v1[1] * sin(angle);
 	float v1n = -v1[0] * sin(angle) + v1[1] * sin(angle);
 
@@ -300,15 +269,22 @@ bool Pool::collision(unsigned int id1, unsigned int id2)
 	float vv1p = ((m1 - e*m2) / (m1 + m2))*v1p;
 	float vv2p = (((1 + e)*m1) / (m1 + m2))*v1p;
 
-	float v1x = vv1p * cos(angle*rad) - v1n*sin(angle*rad);
-	float v1y = vv1p * sin(angle*rad) + v1n*cos(angle*rad);
-	float v2x = vv2p*cos(angle*rad) - v2n*sin(angle*rad);
-	float v2y = vv2p*sin(angle*rad) + v2n*cos(angle*rad);
+	float v1x = vv1p * cos(angle) - v1n*sin(angle);
+	float v1y = vv1p * sin(angle) + v1n*cos(angle);
+	float v2x = vv2p*cos(angle) - v2n*sin(angle);
+	float v2y = vv2p*sin(angle) + v2n*cos(angle);
 
-	Eigen::Vector2f v12(v1x, v1y);
-	Eigen::Vector2f v22(v2x, v2y);
+	Eigen::Vector3f v12(v1x, v1y,0);
+	Eigen::Vector3f v22(v2x, v2y,0);
 
+	this->balls[id2].setVelocity(v12);
+	this->balls[id1].setVelocity(v22);
+	this->balls[id2].setAcceleration(v12* u_BALL_CLOTH_ROLL * g_ * -1);
+	this->balls[id1].setAcceleration(v22* u_BALL_CLOTH_ROLL * g_ * -1);
 	
+	//this->balls[id1].update(1 / 60);
+	//this->balls[id2].update(1 / 60);
+
 	return true;
 }
 

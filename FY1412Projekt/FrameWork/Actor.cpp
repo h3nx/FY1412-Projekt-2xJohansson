@@ -71,6 +71,11 @@ void Actor::setRotationAcceleration(Eigen::Vector3f rotAcc)
 	this->rotationAcceleration = rotAcc;
 }
 
+void Actor::changePosition(Eigen::Vector3f delta)
+{
+	this->position += delta;
+}
+
 void Actor::changeVelocity(Eigen::Vector3f delta)
 {
 	this->velocity += delta;

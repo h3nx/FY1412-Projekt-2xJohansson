@@ -23,7 +23,7 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	this->windowSpec.resolution = settings->getResolution();
 	this->windowSpec.fullScreen = settings->getFullScreen();
 	this->windowSpec.vSync = settings->getVsync();
-	this->pixelSize = 1/(2.6 / (this->windowSpec.resolution.x));
+	this->pixelSize = 1/(2.6 / (1920-100));
 	
 
 	if (!font1.loadFromFile("BebasNeue.otf"))
@@ -31,11 +31,12 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 		return false;
 	}
 
-	this->poolTable.setFillColor(sf::Color(0,84,22,255));
-	this->poolTable.setPosition(this->windowSpec.resolution.x, this->windowSpec.resolution.y);
+
+	this->poolTable.setFillColor(sf::Color::White);
+	this->poolTable.setPosition(0,0);
 	this->poolTable.setSize(sf::Vector2f(2.6*this->pixelSize, 1.3*this->pixelSize));
-	this->poolTable.setPosition(this->windowSpec.resolution.x *0.05, this->windowSpec.resolution.y *0.05);
-	//this->poolTable.setTexture
+	this->texs[16].loadFromFile("Pics/Table.png");
+	this->poolTable.setTexture(&this->texs[16]);
 
 
 	for (int i = 0; i < 15; i++)
@@ -67,8 +68,10 @@ void sfmlGraphics::beginRender()
 	this->window->clear(Color::Black);
 
 	this->window->draw(this->poolTable);
-
-
+	this->balls[0].setPosition(2.6677*this->pixelSize, 0.0677*this->pixelSize);
+	this->balls[0].setScale(2.3, 2.3);
+	this->window->draw(this->balls[0]);
+	this->balls[0].setScale(1, 1);
 }
 
 void sfmlGraphics::render(Actor* toRender)
@@ -95,7 +98,7 @@ void sfmlGraphics::render(Actor* toRender)
 void sfmlGraphics::renderText(std::string txt, int x, int y)
 {
 	sf::Text toRender;
-	toRender.setCharacterSize(50);
+	toRender.setCharacterSize(20);
 	toRender.setFont(this->font1);
 	toRender.setPosition(x, y);
 	toRender.setString(txt);

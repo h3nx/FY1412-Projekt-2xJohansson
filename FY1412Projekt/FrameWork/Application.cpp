@@ -98,18 +98,21 @@ void Application::render()
 
 
 
-	setprecision(2);
+	setprecision(1);
 	this->renderEngine->renderText(to_string(this->time->getAvg()), 0, 0);
 	this->renderEngine->renderText(to_string(this->time->getFPS()), 0, 60);
 	this->renderEngine->renderText(to_string(this->acc), 0, 120);
 	//this->renderEngine->renderText(to_string(this->table->shotTime), 0, 180);
 
-	std::stringstream s1, s2;
+	std::stringstream s1, s2, s3, s4;
 	s1 << this->table->drawBackDir;
 	this->renderEngine->renderText(s1.str(),0,200);
 	s2 << this->table->drawBack;
 	this->renderEngine->renderText(s2.str(), 0, 400);
-
+	s3 << this->table->ballHit;
+	this->renderEngine->renderText(s3.str(), 1700, 0);
+	s4 << this->table->mPos;
+	this->renderEngine->renderText(s4.str(), 1300, 0);
 	
 	this->renderEngine->endRender();
 }
@@ -395,7 +398,7 @@ void Application::input(UINT * message, WPARAM * wParam, LPARAM * lParam)
 	}
 	
 	case WM_SIZE: {
-
+		
 		/*	RECT client;
 			GetClientRect(handle, &client);
 			RECT window;

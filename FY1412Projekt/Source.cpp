@@ -15,6 +15,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 
 
+
+
+
+
+
 	if (app.init(hInstance, hPrevInstance, lpCmdLine, nCmdShow, WndProc))
 	{
 		app.run();
