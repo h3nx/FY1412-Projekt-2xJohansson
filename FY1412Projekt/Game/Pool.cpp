@@ -46,7 +46,7 @@ void Pool::update(float dt)
 {
 	
 	this->updateActors(dt);
-	this->collisionTest(dt);
+	//this->collisionTest(dt);
 
 
 
@@ -114,6 +114,12 @@ void Pool::updateActors(float dt)
 	for (int i = 0; i < 15; i++)
 	{
 		this->balls[i].update(dt);
+		this->collision(i);
+		for (int u = 0; u < 15; u++)
+			if (i != u)
+				this->collision(i, u, dt);
+
+
 	}
 	//Cue
 	this->cueAnimation(dt);
