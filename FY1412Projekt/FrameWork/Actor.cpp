@@ -143,7 +143,7 @@ void Actor::move(float delta)
 }
 void Actor::rotate(float delta	)
 {	
-	//z rotation will stop if hitting 0 or going between +/-
+	//rotation will stop if hitting 0 or going between +/-
 	if (this->rotationAcceleration[2] != 0) {
 		float oldZ = this->rotationVelocity[2], newZ = oldZ + this->rotationAcceleration[2] * delta;
 		if ((oldZ < 0 && newZ >= 0) ||
@@ -153,16 +153,21 @@ void Actor::rotate(float delta	)
 		}
 	}
 	
+	if (this->rotationAcceleration[2] != 0 && this->rotationVelocity[2] <= 0) {
+		this->rotationAcceleration[2] = 0;
+		this->rotationVelocity[2] = 0;
+	}
+
 	this->rotationVelocity += this->rotationAcceleration * delta;
 	this->rotation += this->rotationVelocity * delta;
 	
-	for (int i = 0; i < 3; i++)
-	{
-		if (this->rotation[i] < 0)
-			this->rotation[i] += 360;
-		else if (this->rotation[i] > 359)
-			this->rotation[i] -= 360;
-	}
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	if (this->rotation[i] < 0)
+	//		this->rotation[i] += 360;
+	//	else if (this->rotation[i] > 359)
+	//		this->rotation[i] -= 360;
+	//}
 	
 }
 

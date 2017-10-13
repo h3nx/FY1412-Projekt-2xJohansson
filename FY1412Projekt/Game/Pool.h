@@ -56,6 +56,7 @@ private:
 	Eigen::Vector3f shotVec;
 
 	float pixelSize;
+	bool inMotion;
 
 private:
 

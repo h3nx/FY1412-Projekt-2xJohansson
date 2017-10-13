@@ -58,6 +58,13 @@ bool sfmlGraphics::init(HWND handle, Settings * settings)
 	this->cue.setFillColor(sf::Color::White);
 	this->cue.setOrigin(sf::Vector2f(0.015*this->pixelSize,0));
 
+	//
+	this->balls[0].setTexture(&this->texs[11]);
+
+	//this->dot.setFillColor(sf::Color::Red);
+	//this->dot.setOrigin(5, 5);
+	//this->dot.setRadius(5);
+
 
 	return true;
 }
@@ -82,7 +89,15 @@ void sfmlGraphics::render(Actor* toRender)
 	if (idx < 15)
 	{
 		this->balls[idx].setPosition(pos[0], pos[1]);
+		this->balls[idx].setRotation(toRender->getRotation()[2] * 180 / 3.1415);
 		this->window->draw(this->balls[idx]);
+
+		//if (idx == 0) {
+		//	Eigen::Vector3f r = toRender->getRotation().normalized();
+		//	this->dot.setPosition(pos[0] + r[0] * this->pixelSize, pos[1]);
+		//	//if (toRender->getRotation()[2] > 0)
+		//		this->window->draw(this->dot);
+		//}
 	}
 	if (idx == 15)
 	{

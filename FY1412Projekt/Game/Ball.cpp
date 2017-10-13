@@ -23,7 +23,7 @@ Ball::~Ball()
 
 void Ball::update(float delta)
 {
-	if (current_status == SLIDE && this->getVelocity().norm() <= this->getRotationVelocity().norm() * radius_BALL)
+	if (current_status == SLIDE && this->getVelocity().norm() <= this->getRotationVelocity().head<2>().norm() * radius_BALL)
 		this->startRoll();
 	
 	
@@ -34,6 +34,9 @@ void Ball::update(float delta)
 	}
 	this->move(delta);
 	this->rotate(delta);
+
+	if (this->getVelocity().norm() == 0)
+		current_status = STOP;
 
 }
 void Ball::hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float t_on_ball, float spring_k)
@@ -77,7 +80,7 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 	//from friction in travel direction
 	this->setAcceleration(v.normalized() * u_BALL_CLOTH_SLIDE * g_ * -1);		//deacceleration
 	Eigen::Vector3f a_rota = v.normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_SLIDE * g_ / (0.4 * radius_BALL);
-	a_rota[2] = a_rota_BALL_CLOTH;
+	a_rota[2] = a_rota_BALL_CLOTH;//a_rota.head<2>().norm();
 	this->setRotationAcceleration(a_rota);
 
 
@@ -122,8 +125,11 @@ void Ball::startRoll()
 
 	//this->setAcceleration(this->getAcceleration().normalized() * u_BALL_CLOTH_ROLL * g_);
 
+
 	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_ROLL * g_ * -1);	
-	this->setRotationAcceleration(u_BALL_CLOTH_ROLL * this->getRotationAcceleration() / u_BALL_CLOTH_SLIDE);
+	Eigen::Vector3f a_rota = this->getVelocity().normalized().normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_ROLL * g_ / (0.4 * radius_BALL);
+	a_rota[2] = a_rota_BALL_CLOTH;// a_rota.head<2>().norm();
+	this->setRotationAcceleration(a_rota);
 	
 	//this->setVelocity(Eigen::Vector3f(0, 0, 0));
 	//this->setAcceleration(Eigen::Vector3f(0, 0, 0));

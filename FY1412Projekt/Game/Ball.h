@@ -4,13 +4,14 @@
 #define u_BALL_CLOTH_SLIDE 0.2f
 #define u_BALL_CLOTH_ROLL 0.01f
 #define u_BALL_CUE 0.9f
+#define u_BALL_BALL 0.055f
 #define mass_BALL 0.165f 
 #define mass_CUE 0.540f 
 #define radius_BALL 0.0286f
 #define e_CUE_BALL 0.73
 #define e_BALL_BALL 0.95
 #define e_BALL_WALL 0.5
-#define a_rota_BALL_CLOTH -10.f
+#define a_rota_BALL_CLOTH -100.f
 #define g_ 9.82f
 
 typedef enum status{ STOP, SLIDE, ROLL };

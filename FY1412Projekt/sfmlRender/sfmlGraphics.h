@@ -35,7 +35,7 @@ private:
 	sf::RectangleShape cue;
 	sf::RectangleShape poolTable;
 
-
+	//sf::CircleShape dot;
 
 };
 

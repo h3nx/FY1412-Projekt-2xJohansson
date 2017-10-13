@@ -141,7 +141,7 @@ void Pool::cueAnimation(float dt)
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
 				//this->balls[0].hit(-this->shotVec, this->ballHit, 0.1, 3);
-				this->balls[0].hit(-this->shotVec*4, Eigen::Vector2f(0, 0));
+				this->balls[0].hit(-this->shotVec*4, Eigen::Vector2f(0.01, 0));
 				//Eigen::Vector3f p = this->balls[0].getPosition();
 				//this->balls[0].hit(Eigen::Vector3f(1, 0, 0), Eigen::Vector3f(p[0] - radius_BALL, p[1] - radius_BALL - 0.01, 0));
 				this->shooting = WAITING;
@@ -235,7 +235,8 @@ bool Pool::collision(int ballId)
 }
 bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 {
-	static float PI = 3.14159265;
+	
+	/*static float PI = 3.14159265;
 	static float rad = PI / 180;
 	static float rot = rad * 90;
 
@@ -249,7 +250,6 @@ bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 	this->balls[id1].changePosition(-this->balls[id1].getVelocity()*delta);
 	this->balls[id2].changePosition(-this->balls[id2].getVelocity()*delta);
 		
-
 	Eigen::Vector3f v1(this->balls[id1].getVelocity());
 	Eigen::Vector3f v2(this->balls[id2].getVelocity());
 	
@@ -281,11 +281,39 @@ bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 	this->balls[id1].setVelocity(v22);
 	this->balls[id2].setAcceleration(v12* u_BALL_CLOTH_ROLL * g_ * -1);
 	this->balls[id1].setAcceleration(v22* u_BALL_CLOTH_ROLL * g_ * -1);
-	
+
 	//this->balls[id1].update(1 / 60);
 	//this->balls[id2].update(1 / 60);
 
-	return true;
+	return true;*/
+	
+
+
+	if (((this->balls[id1].getPosition() - this->balls[id2].getPosition()).norm()) <= 2 * radius_BALL) {
+		
+		this->balls[id1].changePosition(-this->balls[id1].getVelocity()*delta);
+		this->balls[id2].changePosition(-this->balls[id2].getVelocity()*delta);
+
+		Eigen::Vector2f ep = (this->balls[id1].getPosition() - this->balls[id2].getPosition()).head<2>().normalized();
+		Eigen::Vector2f en(-ep[1], ep[0]);
+
+		float v1p = this->balls[id1].getVelocity().head<2>().dot(ep), v2p = this->balls[id2].getVelocity().head<2>().dot(ep);
+		float u1p = 0.5 * (1 - e_BALL_BALL) * v1p - 0.5 * (1 + e_BALL_BALL) * v2p,
+			u2p = 0.5 * (1 + e_BALL_BALL) * v1p - 0.5 * (1 - e_BALL_BALL) * v2p;
+
+		Eigen::Vector2f u1 = this->balls[id1].getVelocity().head<2>() + (u1p - v1p)*(ep + u_BALL_BALL*en);
+		Eigen::Vector2f u2 = this->balls[id2].getVelocity().head<2>() + (u2p - v2p)*(ep + u_BALL_BALL*en);
+
+		this->balls[id1].setVelocity(Eigen::Vector3f(u1[0], u1[1], 0));
+		this->balls[id2].setVelocity(Eigen::Vector3f(u2[0], u2[1], 0));
+		this->balls[id1].setAcceleration(this->balls[id1].getVelocity().normalized()* u_BALL_CLOTH_ROLL * g_ * -1);
+		this->balls[id2].setAcceleration(this->balls[id2].getVelocity().normalized()* u_BALL_CLOTH_ROLL * g_ * -1);
+
+		return true;
+	}
+	else
+		return false;
+
 }
 
 
