@@ -19,7 +19,7 @@ using namespace Eigen;
 #define TABLESIZE_X 2.6
 #define TABLESIZE_Y TABLESIZE_X*0.5;
 
-typedef enum shootingStatus { RELEASING = -1, WAITING, DRAWING};
+typedef enum shootingStatus { RELEASING = -1, WAITING, DRAWING, HOLDING};
 
 
 class Pool
@@ -57,6 +57,7 @@ private:
 
 	float pixelSize;
 	bool inMotion;
+	
 
 private:
 
