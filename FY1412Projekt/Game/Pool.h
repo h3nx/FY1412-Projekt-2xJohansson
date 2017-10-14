@@ -68,6 +68,7 @@ private:
 
 	bool collision(unsigned int id1, unsigned int id2, float delta);
 	bool collision(int ballId);
+	void holeTest(int ballId);
 
 };
 

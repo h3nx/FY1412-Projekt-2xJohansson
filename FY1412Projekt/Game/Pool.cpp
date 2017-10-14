@@ -113,6 +113,7 @@ void Pool::updateActors(float dt)
 	//Balls
 	for (int i = 0; i < 15; i++)
 	{
+		this->holeTest(i);
 		this->balls[i].update(dt);
 		this->collision(i);
 		for (int u = 0; u < 15; u++)
@@ -123,6 +124,7 @@ void Pool::updateActors(float dt)
 	}
 	//Cue
 	this->cueAnimation(dt);
+
 
 }
 
@@ -178,7 +180,7 @@ void Pool::cueAnimation(float dt)
 
 void Pool::collisionTest(float dt)
 {
-
+	
 	for (int i = 0; i < 7; i++)
 	{
 		// balls
@@ -232,13 +234,14 @@ bool Pool::collision(int ballId)
 		float dvy = u[1] - this->balls[ballId].getVelocity()[1];
 		u[1-k] = v[1-k] * 5 / 7;
 		this->balls[ballId].setVelocity(u);
-		this->balls[ballId].setAcceleration(u.normalized() * u_BALL_CLOTH_ROLL * g_ * -1);
+		this->balls[ballId].setAcceleration(u.normalized() * u_BALL_CLOTH_ROLL * _g * -1);
 	}
 	
 	return true;
 
 
 }
+
 bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 {
 	
@@ -312,8 +315,18 @@ bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 
 		this->balls[id1].setVelocity(Eigen::Vector3f(u1[0], u1[1], 0));
 		this->balls[id2].setVelocity(Eigen::Vector3f(u2[0], u2[1], 0));
-		this->balls[id1].setAcceleration(this->balls[id1].getVelocity().normalized()* u_BALL_CLOTH_ROLL * g_ * -1);
-		this->balls[id2].setAcceleration(this->balls[id2].getVelocity().normalized()* u_BALL_CLOTH_ROLL * g_ * -1);
+		this->balls[id1].setAcceleration(this->balls[id1].getVelocity().normalized()* u_BALL_CLOTH_ROLL * _g * -1);
+		this->balls[id2].setAcceleration(this->balls[id2].getVelocity().normalized()* u_BALL_CLOTH_ROLL * _g * -1);
+
+		//spin
+		Eigen::Vector3f w1_dir = Eigen::Vector3f(u1[0], u1[1], 0).cross(Eigen::Vector3f(0, 0, 1)).normalized();
+		Eigen::Vector3f w2_dir = Eigen::Vector3f(u2[0], u2[1], 0).cross(Eigen::Vector3f(0, 0, 1)).normalized();
+		
+		Eigen::Vector2f w1xy = Eigen::Vector2f(w1_dir[0], w1_dir[1]) * u_BALL_CLOTH_SLIDE * _g * -1;
+		Eigen::Vector2f w2xy = Eigen::Vector2f(w2_dir[0], w2_dir[1]) * u_BALL_CLOTH_SLIDE * _g * -1;
+
+		this->balls[id1].setRotationAcceleration(Eigen::Vector3f(w1xy[0], w1xy[1], a_rota_BALL_CLOTH));
+		this->balls[id2].setRotationAcceleration(Eigen::Vector3f(w2xy[0], w2xy[1], a_rota_BALL_CLOTH));
 
 		return true;
 	}
@@ -323,6 +336,34 @@ bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 }
 
 
+void Pool::holeTest(int ballId)
+{
+	Eigen::Vector3f pos;
+	float hole_r = 0.05;
+	
+	Eigen::Vector3f h[6];
 
+	h[0] = Eigen::Vector3f(0.1, 0.1, 0);
+	h[1] = Eigen::Vector3f(1.3, 0.07, 0);
+	h[2] = Eigen::Vector3f(2.5, 0.1, 0);
+	h[3] = Eigen::Vector3f(0.1, 1.2, 0);
+	h[4] = Eigen::Vector3f(1.3, 1.23, 0);
+	h[5] = Eigen::Vector3f(2.5, 1.2, 0);
+
+	
+	pos = this->balls[ballId].getPosition();
+
+	for (int i = 0; i < 6; i++) {
+		if ((pos - h[i]).norm() < hole_r) {
+			this->balls[ballId].setPosition(Eigen::Vector3f(2000, 2000, 0));
+			this->balls[ballId].setVelocity(Eigen::Vector3f(0, 0, 0));
+			this->balls[ballId].setAcceleration(Eigen::Vector3f(0, 0, 0));
+			this->balls[ballId].setRotationAcceleration(Eigen::Vector3f(0, 0, 0));
+			this->balls[ballId].setRotationVelocity(Eigen::Vector3f(0, 0, 0));
+			this->balls[ballId].setRotation(Eigen::Vector3f(0, 0, 0));
+		}
+	}
+	
+}
 
 

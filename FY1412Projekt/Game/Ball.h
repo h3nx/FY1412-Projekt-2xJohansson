@@ -12,7 +12,7 @@
 #define e_BALL_BALL 0.95
 #define e_BALL_WALL 0.5
 #define a_rota_BALL_CLOTH -100.f
-#define g_ 9.82f
+#define _g 9.82f
 
 typedef enum status{ STOP, SLIDE, ROLL };
 
