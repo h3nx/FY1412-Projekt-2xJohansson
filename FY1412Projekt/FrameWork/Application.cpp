@@ -72,7 +72,7 @@ void Application::run()
 
 void Application::update()
 {
-	static float freq = 1.0f / 60.0f;
+	static float freq = 1.0f / 500.0f;
 	static float delta = 0;
 	
 	float curr = this->time->deltaTime();

@@ -99,8 +99,10 @@ void Pool::beginShot()
 			(this->mPos[0] - 2.6) / 2.3,
 			this->mPos[1] / 2.3);
 		pos -= Eigen::Vector2f(0.0286, 0.0286);
-		if (pos.squaredNorm() < pow(0.0286, 2))
+		if (pos.squaredNorm() < pow(0.0286, 2)) {
 			this->ballHit = pos;
+			this->ballHit[1] *= -1;
+		}
 	}
 	
 }

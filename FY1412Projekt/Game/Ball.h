@@ -2,7 +2,7 @@
 #include "..\FrameWork\Actor.h"
 
 #define u_BALL_CLOTH_SLIDE 0.2f
-#define u_BALL_CLOTH_ROLL 0.01f
+#define u_BALL_CLOTH_ROLL 0.015f
 #define u_BALL_CUE 0.9f
 #define u_BALL_BALL 0.055f
 #define mass_BALL 0.165f 
@@ -11,7 +11,7 @@
 #define e_CUE_BALL 0.73
 #define e_BALL_BALL 0.95
 #define e_BALL_WALL 0.5
-#define a_rota_BALL_CLOTH -100.f
+#define a_rota_BALL_CLOTH 10.f
 #define _g 9.82f
 
 typedef enum status{ STOP, SLIDE, ROLL };
@@ -24,8 +24,6 @@ public:
 	Ball(Eigen::Vector3f position, float radius, float mass, float friction);
 	~Ball();
 	
-	
-
 	void update(float delta);
 
 	void hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float t_on_ball, float k_spring);
