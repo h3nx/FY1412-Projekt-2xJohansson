@@ -38,9 +38,14 @@ void Ball::update(float delta)
 	potato = this->getVelocity() + this->getRotationVelocity().cross(Eigen::Vector3f(0, this->getRadius(), 0));
 
 
+
+	//perimeter velocity
+	vp = this->getRotationVelocity().cross(Eigen::Vector3f(0, 0, -this->radius)) + this->getVelocity();
+
+
 	
 	//	float w1 = wrot.head<2>().dot(Eigen::Vector2f(0, 1));
-	if(current_status == SLIDE && this->getVelocity().norm() <= w1[1] * radius_BALL)
+	if(current_status == SLIDE && vp.norm() == this->getRotationVelocity().norm() * radius_BALL)
 	//if (current_status == SLIDE && abs((potato.norm() - abs(w1[1] * radius_BALL))) <= 0.01)
 	//if (current_status == SLIDE && abs((this->getVelocity().norm() - w1[1] * radius_BALL)) <= 0.01)
 		this->startRoll();
@@ -59,7 +64,8 @@ void Ball::update(float delta)
 
 void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 {
-	Eigen::Vector3f ep, en, ev, u, va;
+	Eigen::Vector3f ep, en, ev, u, va, vp;
+	//float _u = u_BALL_CLOTH_SLIDE;
 	//vel_cue[2] = 0.3;
 	
 
@@ -82,13 +88,11 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 	this->setRotationVelocity(eSpin);
 
 	//perimeter velocity
-	//vp = eSpin.cross(Eigen::Vector3f(0, 0, -this->radius)) + v;
-	
-	
-
-
-
-
+	vp = eSpin.cross(Eigen::Vector3f(0, 0, -this->radius)) + v;
+	//from friction in travel direction
+	Eigen::Vector3f af = vp.normalized() * u_BALL_CLOTH_SLIDE * -_g;
+	//from rotation + friction
+	this->setAcceleration(af - u_BALL_CLOTH_SLIDE * 9.82 * vp.normalized());
 
 
 	/*
@@ -99,8 +103,6 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 	Eigen::Vector3f wrot = rot * this->getRotationVelocity();
 	float w1 = wrot.head<2>().dot(Eigen::Vector2f(0, 1));
 */
-	//from friction in travel direction
-	float _u = u_BALL_CLOTH_SLIDE;
 	//if (hit_pos[1] <= 2 * radius_BALL / 5) {
 	//	_u = u_BALL_CLOTH_ROLL;
 	//	current_status = ROLL;
@@ -110,18 +112,9 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 	//	_u = u_BALL_CLOTH_SLIDE;
 	//	current_status = SLIDE;
 	//}
-	Eigen::Vector3f af = v.normalized() * _u * -_g;
-	Eigen::Vector3f vp = v - eSpin[0] * radius_BALL * Eigen::Vector3f(0, 1, 0) - eSpin[1] * radius_BALL*Eigen::Vector3f(1, 0, 0);
+	//Eigen::Vector3f vp = v - eSpin[0] * radius_BALL * Eigen::Vector3f(0, 1, 0) - eSpin[1] * radius_BALL*Eigen::Vector3f(1, 0, 0);
 
-	this->setAcceleration(af - u_BALL_CLOTH_SLIDE * 9.82 * vp.normalized());
-//	this->setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_SLIDE * -9.82, 0, 0));
-	Eigen::Vector3f a_rota = v.normalized().cross(Eigen::Vector3f(0, 0, -1)) * _u * _g / (0.4 * radius_BALL);
-	
-
-	//a_rota[2] = a_rota_BALL_CLOTH;//a_rota.head<2>().norm();
-	//a_rota[0] = (w[0] > 0) ? w[0] - a_rota_BALL_CLOTH : w[0] + a_rota_BALL_CLOTH;
-//	a_rota[1] = (w[1] > 0) ? w[1] - a_rota_BALL_CLOTH : w[1] + a_rota_BALL_CLOTH;
-	//this->setRotationAcceleration(Eigen::Vector3f(0,0,0));
+	Eigen::Vector3f a_rota = v.normalized().cross(Eigen::Vector3f(0, 0, -1)) * u_BALL_CLOTH_SLIDE * _g / (0.4 * radius_BALL);
 
 	if (eSpin[2] > 0)
 		a_rota[2] = -a_rota_BALL_CLOTH;
@@ -172,7 +165,7 @@ void Ball::startRoll()
 
 	//this->setAcceleration(this->getAcceleration().normalized() * u_BALL_CLOTH_ROLL * g_);
 
-
+	this->setVelocity(Eigen::Vector3f(0, 0, 0));
 	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_ROLL * _g  * -1);	
 	this->setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g,0,0));
 	// = this->getVelocity().normalized().normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_ROLL * _g / (0.4 * radius_BALL);
