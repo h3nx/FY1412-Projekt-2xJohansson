@@ -168,7 +168,7 @@ void Pool::cueAnimation(float dt)
 			if (this->drawBack.squaredNorm() < this->balls[0].getR2())
 			{
 			
-				this->balls[0].hit(-this->shotVec*4, this->ballHit);
+				this->balls[0].hit(-this->shotVec*8, this->ballHit);
 				this->shooting = WAITING;
 				this->cue->setPosition(Eigen::Vector3f(-10,-10,0));
 			}

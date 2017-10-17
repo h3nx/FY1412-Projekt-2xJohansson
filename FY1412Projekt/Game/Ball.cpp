@@ -37,23 +37,51 @@ void Ball::update(float delta)
 
 	potato = this->getVelocity() + this->getRotationVelocity().cross(Eigen::Vector3f(0, this->getRadius(), 0));
 
+	if (this->getID() == 0)
+		int blubb = 0;
 
+	Eigen::Vector3f ff, aa;
 
 	//perimeter velocity
 	vp = this->getRotationVelocity().cross(Eigen::Vector3f(0, 0, -this->radius)) + this->getVelocity();
+	float potttt = this->getRotationVelocity().norm() * radius_BALL;
+	if(current_status == SLIDE && abs(vp.norm() - potttt) <= 0.1)
+		this->startRoll();
+	//if (current_status == SLIDE && abs((potato.norm() - abs(w1[1] * radius_BALL))) <= 0.01)
+	//if (current_status == SLIDE && abs((this->getVelocity().norm() - w1[1] * radius_BALL)) <= 0.01)
+	else
+	{
+		//from friction in travel direction
+		Eigen::Vector3f af = vp.normalized() * u_BALL_CLOTH_SLIDE * -_g;
+		//from rotation + friction
+		this->setAcceleration(af - u_BALL_CLOTH_SLIDE * 9.82 * vp.normalized());
+
+
+
+		//set rotation acc
+		aa = Eigen::Vector3f(0,0,1).cross(-vp.normalized()) * u_BALL_CLOTH_SLIDE * _g / (0.4 * radius_BALL);
+		if (this->getRotationVelocity()[2] > 0)
+			aa[2] = -a_rota_BALL_CLOTH;
+		else if (this->getRotationVelocity()[2] < 0)
+			aa[2] = a_rota_BALL_CLOTH;
+		else if (this->getRotationVelocity()[2] == 0)
+			aa[2] = 0;
+		this->setRotationAcceleration(aa);
+	}
+
+
+
 
 
 	
 	//	float w1 = wrot.head<2>().dot(Eigen::Vector2f(0, 1));
-	if(current_status == SLIDE && vp.norm() == this->getRotationVelocity().norm() * radius_BALL)
-	//if (current_status == SLIDE && abs((potato.norm() - abs(w1[1] * radius_BALL))) <= 0.01)
-	//if (current_status == SLIDE && abs((this->getVelocity().norm() - w1[1] * radius_BALL)) <= 0.01)
-		this->startRoll();
 	
+	//stop ball
 	if (this->getVelocity().norm() <= this->getAcceleration().norm() * delta) {
 		this->setAcceleration(Eigen::Vector3f(0, 0, 0));
 		this->setVelocity(Eigen::Vector3f(0, 0, 0));
 	}
+	//update vel + pos
 	this->move(delta);
 	this->rotate(delta);
 
@@ -90,7 +118,7 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 	//perimeter velocity
 	vp = eSpin.cross(Eigen::Vector3f(0, 0, -this->radius)) + v;
 	//from friction in travel direction
-	Eigen::Vector3f af = vp.normalized() * u_BALL_CLOTH_SLIDE * -_g;
+	Eigen::Vector3f af = v.normalized() * u_BALL_CLOTH_SLIDE * -_g;
 	//from rotation + friction
 	this->setAcceleration(af - u_BALL_CLOTH_SLIDE * 9.82 * vp.normalized());
 
@@ -165,7 +193,8 @@ void Ball::startRoll()
 
 	//this->setAcceleration(this->getAcceleration().normalized() * u_BALL_CLOTH_ROLL * g_);
 
-	this->setVelocity(Eigen::Vector3f(0, 0, 0));
+	//this->setVelocity(Eigen::Vector3f(0, 0, 0));
+	//this->setAcceleration(Eigen::Vector3f(0, 0, 0));
 	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_ROLL * _g  * -1);	
 	this->setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g,0,0));
 	// = this->getVelocity().normalized().normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_ROLL * _g / (0.4 * radius_BALL);
