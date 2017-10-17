@@ -22,6 +22,7 @@ public:
 	void setScale(Eigen::Vector3f scale);
 	void setVelocity(Eigen::Vector3f velocity);
 	void setAcceleration(Eigen::Vector3f acceleration);
+	void setDirAcc(Eigen::Vector3f acceleration);
 	void setRotationVelocity(Eigen::Vector3f rotVel);
 	void setRotationAcceleration(Eigen::Vector3f rotAcc);
 	void setSize(Eigen::Vector3f size);
@@ -48,6 +49,7 @@ private:
 	Eigen::Vector3f scale;
 	Eigen::Vector3f velocity;
 	Eigen::Vector3f acceleration;
+	Eigen::Vector3f dirAcceleration;
 	Eigen::Vector3f rotation;	
 	Eigen::Vector3f rotationVelocity;
 	Eigen::Vector3f rotationAcceleration;

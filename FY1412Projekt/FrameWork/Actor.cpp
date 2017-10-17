@@ -8,6 +8,7 @@ Actor::Actor()
 	this->direction = Vector3f(0, 0, 0);
 	this->velocity = Vector3f(0, 0, 0);
 	this->acceleration = Vector3f(0, 0, 0);
+	this->dirAcceleration = Vector3f(0, 0, 0);
 	this->rotationVelocity = Vector3f(0, 0, 0);
 	this->rotationAcceleration = Vector3f(0, 0, 0);
 	this->scale = Vector3f(1, 1, 1);
@@ -61,6 +62,14 @@ void Actor::setVelocity(Eigen::Vector3f velocity)
 void Actor::setAcceleration(Eigen::Vector3f acceleration)
 {
 	this->acceleration = acceleration;
+}
+void Actor::setDirAcc(Eigen::Vector3f acceleration)
+{
+
+	float a = atan2(this->velocity[1], this->velocity[0]);
+	Eigen::Vector3f rotated = AngleAxis<float>(a, Eigen::Vector3f(0, 0, 1)) * this->velocity;
+	rotated += this->dirAcceleration;
+
 }
 void Actor::setRotationVelocity(Eigen::Vector3f rotVel)
 {
