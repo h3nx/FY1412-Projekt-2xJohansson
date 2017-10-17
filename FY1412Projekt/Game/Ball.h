@@ -26,7 +26,6 @@ public:
 	
 	void update(float delta);
 
-	void hit(Eigen::Vector3f vec_ball_cue, Eigen::Vector2f vec_hit_pos, float t_on_ball, float k_spring);
 	void hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos);
 
 	void setRadius(float radius);
@@ -37,6 +36,8 @@ public:
 	float getR2();
 	float getMass();
 	float getFriction();
+
+
 
 
 private:

@@ -5,7 +5,7 @@ Timer::Timer()
 {
 	this->startTime = GetTickCount();
 	this->lastTime = GetTickCount();
-	this->smoothing = 0.95;
+	this->smoothing = 0.99;
 	this->avg = 0;
 }
 Timer::Timer(const float smoothing):Timer()

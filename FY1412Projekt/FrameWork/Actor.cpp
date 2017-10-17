@@ -65,11 +65,7 @@ void Actor::setAcceleration(Eigen::Vector3f acceleration)
 }
 void Actor::setDirAcc(Eigen::Vector3f acceleration)
 {
-
-	float a = atan2(this->velocity[1], this->velocity[0]);
-	Eigen::Vector3f rotated = AngleAxis<float>(a, Eigen::Vector3f(0, 0, 1)) * this->velocity;
-	rotated += this->dirAcceleration;
-
+	this->dirAcceleration = acceleration;
 }
 void Actor::setRotationVelocity(Eigen::Vector3f rotVel)
 {
@@ -143,6 +139,11 @@ void Actor::update(float delta)
 void Actor::move(float delta)
 {
 	this->velocity += this->acceleration * delta;
+	//float a = atan2(this->velocity[1], this->velocity[0]);
+	//float l = this->velocity.norm();
+	//Eigen::Vector3f rotated = AngleAxis<float>(a, Eigen::Vector3f(0, 0, 1)) * this->velocity;
+	//rotated += this->dirAcceleration*delta;
+	//this->velocity = (AngleAxis<float>(3.14*2-a, Eigen::Vector3f(0, 0, 1)) * rotated).normalized()*l;
 	this->position += this->velocity * delta;
 	
 	//this->rotationVelocity += this->rotationAcceleration * delta;

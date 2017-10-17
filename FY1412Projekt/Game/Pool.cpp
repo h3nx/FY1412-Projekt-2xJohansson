@@ -24,11 +24,13 @@ Pool::Pool()
 		this->balls[i].setMass(mass_BALL);
 		this->balls[i].setRadius(0.0286);
 		this->balls[i].setID(i);
+		this->balls[i].setVelocity(Eigen::Vector3f(0,0,0));
+		this->balls[i].setDirAcc(Eigen::Vector3f(0, 0, 0));
 	}
 
 	this->setBalls();
 	//tmp whiteball
-	this->balls[0].setVelocity(Eigen::Vector3f(0, 0, 0));
+	this->balls[0].setVelocity(Eigen::Vector3f(0.0, 0, 0));
 	this->balls[0].setAcceleration(Eigen::Vector3f(0, 0, 0));
 
 	this->cue->setPosition(Eigen::Vector3f(1, 1, 0));
@@ -180,7 +182,7 @@ void Pool::cueAnimation(float dt)
 		{
 			relPos = (this->mPos - this->balls[0].getPosition()).normalized();
 			this->cue->setPosition(this->balls[0].getPosition() + relPos*this->balls[0].getRadius()*3);
-			angle = atan2(relPos[1], relPos[0])*(180 / 3.14159265359) - 90;
+			angle = atan2(relPos[1], relPos[0])*(180 / 3.14159265359) -90;
 		}
 		else
 		{
@@ -251,6 +253,7 @@ bool Pool::collision(int ballId)
 		u[1-k] = v[1-k] * 5 / 7;
 		this->balls[ballId].setVelocity(u);
 		this->balls[ballId].setAcceleration(u.normalized() * u_BALL_CLOTH_ROLL * _g * -1);
+	//	this->balls[ballId].setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g * -1, 0, 0));
 	}
 	
 	return true;
@@ -280,6 +283,8 @@ bool Pool::collision(unsigned int id1, unsigned int id2, float delta)
 		this->balls[id2].setVelocity(Eigen::Vector3f(u2[0], u2[1], 0));
 		this->balls[id1].setAcceleration(this->balls[id1].getVelocity().normalized()* u_BALL_CLOTH_ROLL * _g * -1);
 		this->balls[id2].setAcceleration(this->balls[id2].getVelocity().normalized()* u_BALL_CLOTH_ROLL * _g * -1);
+	//	this->balls[id1].setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g * -1));
+	//	this->balls[id2].setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g * -1));
 
 		//spin
 		Eigen::Vector3f w1_dir = Eigen::Vector3f(u1[0], u1[1], 0).cross(Eigen::Vector3f(0, 0, 1)).normalized();
@@ -318,12 +323,13 @@ void Pool::holeTest(int ballId)
 
 	for (int i = 0; i < 6; i++) {
 		if ((pos - h[i]).norm() < hole_r) {
-			this->balls[ballId].setPosition(Eigen::Vector3f(-10, -10, 0));
+			this->balls[ballId].setPosition(Eigen::Vector3f(-1*ballId - 10, -1 * ballId - 10, 0));
 			this->balls[ballId].setVelocity(Eigen::Vector3f(0, 0, 0));
 			this->balls[ballId].setAcceleration(Eigen::Vector3f(0, 0, 0));
 			this->balls[ballId].setRotationAcceleration(Eigen::Vector3f(0, 0, 0));
 			this->balls[ballId].setRotationVelocity(Eigen::Vector3f(0, 0, 0));
 			this->balls[ballId].setRotation(Eigen::Vector3f(0, 0, 0));
+			this->balls[ballId].setDirAcc(Eigen::Vector3f(0, 0, 0));
 			if (ballId == 0)
 			{
 				this->shooting = HOLDING;
