@@ -44,6 +44,7 @@ public:
 	Eigen::Vector2f ballHit;
 	Eigen::Vector3f mPos;
 
+
 private:
 	Ball* balls;
 	Cue* cue;

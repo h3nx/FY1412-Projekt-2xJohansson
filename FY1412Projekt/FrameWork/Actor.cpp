@@ -14,6 +14,7 @@ Actor::Actor()
 	this->scale = Vector3f(1, 1, 1);
 	this->rotation = Vector3f(0, 0, 0);
 	this->id = 0;
+	this->bullshit = "";
 }
 
 Actor::Actor(Eigen::Vector3f position):Actor()

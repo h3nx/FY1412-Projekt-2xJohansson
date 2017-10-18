@@ -1,5 +1,5 @@
 #include "Ball.h"
-
+#include "../sfmlRender/sfmlGraphics.h"
 Ball::Ball()
 {
 	this->setPosition(Eigen::Vector3f(0, 0, 0));
@@ -43,13 +43,20 @@ void Ball::update(float delta)
 	Eigen::Vector3f ff, aa;
 
 	//perimeter velocity
+	std::setprecision(2);
 	vp = this->getRotationVelocity().cross(Eigen::Vector3f(0, 0, -this->radius)) + this->getVelocity();
 	float potttt = this->getRotationVelocity().norm() * radius_BALL;
-	if(current_status == SLIDE && abs(vp.norm() - potttt) <= 0.1)
+	float pointVel = vp.norm(); 
+	if (this->getID() == 0)
+	this->bullshit = 
+		"rotVelrad: "+to_string(potttt) + " \n" + 
+		"pointRot: "+to_string(pointVel)+"\n"+ 
+		to_string(abs(pointVel - potttt)) + "\n" + 
+		to_string(current_status)+"\n" +
+		+"\n"  ;
+	if(current_status == SLIDE && abs(pointVel - potttt) <= 0.1)
 		this->startRoll();
-	//if (current_status == SLIDE && abs((potato.norm() - abs(w1[1] * radius_BALL))) <= 0.01)
-	//if (current_status == SLIDE && abs((this->getVelocity().norm() - w1[1] * radius_BALL)) <= 0.01)
-	else
+	else if(current_status == SLIDE)
 	{
 		//from friction in travel direction
 		Eigen::Vector3f af = vp.normalized() * u_BALL_CLOTH_SLIDE * -_g;
@@ -68,18 +75,12 @@ void Ball::update(float delta)
 			aa[2] = 0;
 		this->setRotationAcceleration(aa);
 	}
-
-
-
-
-
-	
-	//	float w1 = wrot.head<2>().dot(Eigen::Vector2f(0, 1));
-	
 	//stop ball
 	if (this->getVelocity().norm() <= this->getAcceleration().norm() * delta) {
 		this->setAcceleration(Eigen::Vector3f(0, 0, 0));
 		this->setVelocity(Eigen::Vector3f(0, 0, 0));
+		this->setRotationVelocity(Eigen::Vector3f(0, 0, 0));
+		this->setRotationAcceleration(Eigen::Vector3f(0, 0, 0));
 	}
 	//update vel + pos
 	this->move(delta);
@@ -89,6 +90,9 @@ void Ball::update(float delta)
 		current_status = STOP;
 
 }
+
+
+
 
 void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 {
@@ -152,8 +156,18 @@ void Ball::hit(Eigen::Vector3f vel_cue, Eigen::Vector2f hit_pos)
 		a_rota[2] = 0;
 	this->setRotationAcceleration(a_rota);
 	
-
-	current_status = SLIDE;
+	current_status = SLIDE;	
+	float potttt = this->getRotationVelocity().norm() * radius_BALL;
+	float pointVel = vp.norm();
+	if (this->getID() == 0)
+		this->bullshit =
+		"rotVelrad: " + to_string(potttt) + " \n" +
+		"pointRot: " + to_string(pointVel) + "\n" +
+		"diff: "+to_string(abs(pointVel - potttt)) + "\n" +
+		to_string(current_status) + "\n" +
+		+"\n";
+	if (current_status == SLIDE && abs(pointVel - potttt) <= 0.1)
+		this->startRoll();
 }
 
 void Ball::setRadius(float radius)
@@ -190,21 +204,10 @@ float Ball::getFriction()
 void Ball::startRoll()
 {
 	this->current_status = ROLL;
-
-	//this->setAcceleration(this->getAcceleration().normalized() * u_BALL_CLOTH_ROLL * g_);
-
-	//this->setVelocity(Eigen::Vector3f(0, 0, 0));
-	//this->setAcceleration(Eigen::Vector3f(0, 0, 0));
-	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_ROLL * _g  * -1);	
-	this->setDirAcc(Eigen::Vector3f(u_BALL_CLOTH_ROLL * _g,0,0));
-	// = this->getVelocity().normalized().normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_ROLL * _g / (0.4 * radius_BALL);
-	//a_rota[2] = a_rota_BALL_CLOTH;// a_rota.head<2>().norm();	
+	this->setAcceleration(this->getVelocity().normalized() * u_BALL_CLOTH_ROLL * _g  * -1);		
 	this->setRotationVelocity(Eigen::Vector3f(0, 0, 0));
-	//this->setVelocity(Eigen::Vector3f(0, 0, 0));
-	Eigen::Vector3f a_rota = this->getVelocity().normalized().cross(Eigen::Vector3f(0, 0, 1)) * u_BALL_CLOTH_ROLL * _g / (0.4 * radius_BALL);
-	//a_rota[2] = a_rota_BALL_CLOTH;//a_rota.head<2>().norm();
-	a_rota[2] = 0;
-	this->setRotationAcceleration(a_rota);
+	this->setRotationAcceleration(Eigen::Vector3f(0, 0, 0));
+
 
 }
 

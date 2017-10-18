@@ -106,7 +106,12 @@ void sfmlGraphics::render(Actor* toRender)
 		this->window->draw(this->cue);
 		this->renderText(to_string(toRender->getRotation()[2]),200,200);
 	}
+	if (idx == 0)
+	{
+		this->renderText(toRender->bullshit,1700,100);
+		
 
+	}
 
 }
 

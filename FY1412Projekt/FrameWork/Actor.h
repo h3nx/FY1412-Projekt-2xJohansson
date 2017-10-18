@@ -4,6 +4,7 @@
 //#include "../Eigen/Core"
 #include "../Eigen/Dense"
 #include "../Eigen/Geometry"
+#include <iomanip>
 using namespace Eigen;
 
 class Actor
@@ -42,6 +43,7 @@ public:
 	Eigen::Vector3f getSize();
 	unsigned int getID();
 
+	std::string bullshit;
 
 private:
 	Eigen::Vector3f position;

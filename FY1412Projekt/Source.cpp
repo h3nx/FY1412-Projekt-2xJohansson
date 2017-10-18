@@ -14,9 +14,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	
 
+	Eigen::Vector3f x(1, 0, 0);
+	Eigen::Vector3f y(0, 1, 0);
 
-
-
+	Eigen::Vector3f z = x.cross(y);
 
 
 
